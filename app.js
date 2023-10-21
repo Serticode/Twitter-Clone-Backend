@@ -1,4 +1,4 @@
-console.log(process.env.MONGO_URI);
+/* console.log(process.env.MONGO_URI);
 console.log("Hello World - Start of a new beginning for Serticode.");
 
 //! ENSURE ENVIRONMENT VARIABLES ARE LOADED
@@ -37,3 +37,4 @@ const startServer = async () => {
 };
 
 startServer();
+ */
