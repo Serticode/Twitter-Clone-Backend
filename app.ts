@@ -14,7 +14,7 @@ const start = async () => {
     if (!mongoUri) {
       throw new Error("MONGO_URI is missing in .env file");
     }
-    console.log("Connecting to database...");
+    console.log("Connecting to database...Retry");
     await connectToDatabase(mongoUri);
     console.log("Connected to database");
     console.log("Starting server...");

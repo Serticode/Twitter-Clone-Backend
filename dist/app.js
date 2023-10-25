@@ -14,10 +14,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const db_connect_1 = require("./database/db_connect");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || process.env.BACKUP_PORT;
+//! HANDLE JWT
+const token = jsonwebtoken_1.default.sign({ userId: "SOME USER ID", email: "SOME USER EMAIL" }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES,
+    issuer: process.env.JWT_ISSUER,
+    jwtid: "SOME IDENTIFIER",
+});
+console.log(token);
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const mongoUri = process.env.MONGO_URI;
