@@ -55,6 +55,9 @@ app.get("/swagger.json", (_, res) => {
 });
 const routes_1 = require("./routes/routes");
 (0, routes_1.RegisterRoutes)(app);
+//! ERROR HANDLER
+const error_handler_1 = require("./middleware/error_handler");
+app.use(error_handler_1.errorHandlerMiddleware);
 const port = process.env.PORT || process.env.BACKUP_PORT;
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
