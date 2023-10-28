@@ -25,6 +25,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
+//!
+//! THIS FILE IS BASICALLY THE ENDPOINTS THAT THE CLIENT CALLS
+//! WE USE TSOA TO HELP US GENERATE THE END API DOCS
+//!
+//!
 const http_status_codes_1 = require("http-status-codes");
 const tsoa_1 = require("tsoa");
 const auth_service_1 = __importDefault(require("../../services/auth/auth_service"));
@@ -35,6 +40,14 @@ let AuthController = class AuthController extends tsoa_1.Controller {
         return __awaiter(this, void 0, void 0, function* () {
             this.setStatus(http_status_codes_1.StatusCodes.CREATED);
             return new auth_service_1.default().register(requestBody);
+        });
+    }
+    //!
+    //! LOGIN USER
+    login(requestBody) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.setStatus(http_status_codes_1.StatusCodes.OK);
+            return new auth_service_1.default().login(requestBody);
         });
     }
     // TODO: remove this dummy endpoint later when
@@ -52,12 +65,23 @@ __decorate([
     (0, tsoa_1.Post)("register")
     //! ID FOR THE OPERATION
     ,
-    (0, tsoa_1.OperationId)("registerUser"),
+    (0, tsoa_1.OperationId)("registerUser")
+    //!
+    //! REGISTER USER
+    ,
     __param(0, (0, tsoa_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
+__decorate([
+    (0, tsoa_1.Post)("login"),
+    (0, tsoa_1.OperationId)("loginUser"),
+    __param(0, (0, tsoa_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "login", null);
 __decorate([
     (0, tsoa_1.Post)("dummy"),
     (0, tsoa_1.OperationId)("dummy"),
@@ -71,4 +95,6 @@ exports.AuthController = AuthController = __decorate([
     //! ENFORCING A ROUTE TAG
     ,
     (0, tsoa_1.Tags)("Auth")
+    //!
+    //! CONTROLLER STARTS HERE
 ], AuthController);

@@ -1,5 +1,10 @@
 //!
-//! THIS IS THE MODEL OF THE REQUESTED DATA FROM THE CLIENT
+//!THIS FILE HOUSES SIMPLE MODELS OF DATA TYPES THAT WE REQUEST FROM OR RETURN TO THE CLIENT
+//!
+//!
+
+//!
+//! THIS IS THE MODEL OF THE REQUESTED DATA FROM THE CLIENT FOR REGISTERING A USER
 export interface UserCreationParams {
   email: string;
   name: string;
@@ -22,4 +27,11 @@ export interface UserAndCredentials {
   user: User;
   token: string;
   refresh: string;
+}
+
+//!
+//! LOGIN PARAMS
+export interface LoginParams {
+  email: string;
+  password: string;
 }
