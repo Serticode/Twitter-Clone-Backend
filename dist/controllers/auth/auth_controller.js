@@ -26,8 +26,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const http_status_codes_1 = require("http-status-codes");
-const auth_service_1 = __importDefault(require("services/auth/auth_service"));
 const tsoa_1 = require("tsoa");
+const auth_service_1 = __importDefault(require("../../services/auth/auth_service"));
 //! ENFORCING THE ROUTE USING TSOA @ROUTE
 let AuthController = class AuthController extends tsoa_1.Controller {
     //! STATING THAT THE METHOD BELOW IS A POST METHOD. IT CAN BE A GET, PUT OR DELETE

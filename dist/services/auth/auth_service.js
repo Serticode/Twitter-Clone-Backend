@@ -12,8 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_model_1 = __importDefault(require("database/models/user/user_model"));
 const uuid_1 = require("uuid");
+const user_model_1 = __importDefault(require("../../database/models/user/user_model"));
 class AuthService {
     register(params) {
         return __awaiter(this, void 0, void 0, function* () {

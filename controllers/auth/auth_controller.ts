@@ -1,9 +1,4 @@
 import { StatusCodes } from "http-status-codes";
-import AuthService from "services/auth/auth_service";
-import {
-  UserAndCredentials,
-  UserCreationParams,
-} from "services/models/auth_models";
 import {
   Body,
   Controller,
@@ -13,6 +8,11 @@ import {
   Security,
   Tags,
 } from "tsoa";
+import AuthService from "../../services/auth/auth_service";
+import {
+  UserAndCredentials,
+  UserCreationParams,
+} from "../../services/models/auth_models";
 
 //! ENFORCING THE ROUTE USING TSOA @ROUTE
 @Route("/api/v1/auth")
