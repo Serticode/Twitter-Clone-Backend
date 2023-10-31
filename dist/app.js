@@ -60,6 +60,7 @@ const error_handler_1 = require("./middleware/error_handler");
 app.use(error_handler_1.errorHandlerMiddleware);
 const port = process.env.PORT || process.env.BACKUP_PORT;
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
+    2;
     try {
         const mongoUri = process.env.MONGO_URI;
         if (!mongoUri) {

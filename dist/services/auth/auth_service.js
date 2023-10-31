@@ -17,6 +17,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const uuid_1 = require("uuid");
+const blacklist_tokens_1 = __importDefault(require("../../database/models/blacklist/blacklist_tokens"));
 const user_model_1 = __importDefault(require("../../database/models/user/user_model"));
 const errors_1 = require("../../errors");
 class AuthService {
@@ -65,6 +66,13 @@ class AuthService {
                 token,
                 refresh,
             };
+        });
+    }
+    //!
+    //! LOG OUT
+    logout(jti) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield blacklist_tokens_1.default.create({ object: jti, kind: "jti" });
         });
     }
 }

@@ -4,14 +4,14 @@
 //!
 
 import { v4 as uuidv4 } from "uuid";
+import Blacklist from "../../database/models/blacklist/blacklist_tokens";
 import User from "../../database/models/user/user_model";
+import { UnauthorizedError } from "../../errors";
 import {
   LoginParams,
   UserAndCredentials,
   UserCreationParams,
 } from "../models/auth_models";
-
-import { UnauthorizedError } from "../../errors";
 
 export default class AuthService {
   //!
@@ -60,6 +60,12 @@ export default class AuthService {
       token,
       refresh,
     };
+  }
+
+  //!
+  //! LOG OUT
+  public async logout(jti: string): Promise<void> {
+    await Blacklist.create({ object: jti, kind: "jti" });
   }
 
   //! END OF FILE

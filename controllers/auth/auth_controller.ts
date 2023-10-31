@@ -3,12 +3,15 @@
 //! WE USE TSOA TO HELP US GENERATE THE END API DOCS
 //!
 //!
+import { Request as ExpressRequest } from "express";
 import { StatusCodes } from "http-status-codes";
 import {
   Body,
   Controller,
+  Delete,
   OperationId,
   Post,
+  Request,
   Route,
   Security,
   Tags,
@@ -53,6 +56,17 @@ export class AuthController extends Controller {
   ): Promise<UserAndCredentials> {
     this.setStatus(StatusCodes.OK);
     return new AuthService().login(requestBody);
+  }
+
+  //! DELETE / LOGOUT END POINT
+
+  @Delete()
+  @Security("jwt")
+  @OperationId("logoutUser")
+  public async logout(@Request() request: ExpressRequest): Promise<void> {
+    this.setStatus(StatusCodes.NO_CONTENT);
+    const user = request.user as { jti: string };
+    await new AuthService().logout(user.jti);
   }
 
   // TODO: remove this dummy endpoint later when

@@ -25,11 +25,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
-//!
-//! THIS FILE IS BASICALLY THE ENDPOINTS THAT THE CLIENT CALLS
-//! WE USE TSOA TO HELP US GENERATE THE END API DOCS
-//!
-//!
 const http_status_codes_1 = require("http-status-codes");
 const tsoa_1 = require("tsoa");
 const auth_service_1 = __importDefault(require("../../services/auth/auth_service"));
@@ -48,6 +43,14 @@ let AuthController = class AuthController extends tsoa_1.Controller {
         return __awaiter(this, void 0, void 0, function* () {
             this.setStatus(http_status_codes_1.StatusCodes.OK);
             return new auth_service_1.default().login(requestBody);
+        });
+    }
+    //! DELETE / LOGOUT END POINT
+    logout(request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.setStatus(http_status_codes_1.StatusCodes.NO_CONTENT);
+            const user = request.user;
+            yield new auth_service_1.default().logout(user.jti);
         });
     }
     // TODO: remove this dummy endpoint later when
@@ -82,6 +85,15 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
+__decorate([
+    (0, tsoa_1.Delete)(),
+    (0, tsoa_1.Security)("jwt"),
+    (0, tsoa_1.OperationId)("logoutUser"),
+    __param(0, (0, tsoa_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "logout", null);
 __decorate([
     (0, tsoa_1.Post)("dummy"),
     (0, tsoa_1.OperationId)("dummy"),

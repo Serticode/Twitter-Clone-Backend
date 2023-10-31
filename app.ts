@@ -36,6 +36,7 @@ app.use(errorHandlerMiddleware);
 const port = process.env.PORT || process.env.BACKUP_PORT;
 
 const start = async () => {
+  2;
   try {
     const mongoUri = process.env.MONGO_URI;
     if (!mongoUri) {
