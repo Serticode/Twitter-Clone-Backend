@@ -17,10 +17,12 @@ import {
   Tags,
 } from "tsoa";
 import AuthService from "../../services/auth/auth_service";
+import AuthenticatedUser from "../../middleware/models/authenticated_user";
 import {
   LoginParams,
   UserAndCredentials,
   UserCreationParams,
+  RefreshParams,
 } from "../../services/models/auth_models";
 
 //! ENFORCING THE ROUTE USING TSOA @ROUTE
@@ -58,8 +60,7 @@ export class AuthController extends Controller {
     return new AuthService().login(requestBody);
   }
 
-  //! DELETE / LOGOUT END POINT
-
+  //! LOGOUT END POINT
   @Delete()
   @Security("jwt")
   @OperationId("logoutUser")
@@ -67,6 +68,20 @@ export class AuthController extends Controller {
     this.setStatus(StatusCodes.NO_CONTENT);
     const user = request.user as { jti: string };
     await new AuthService().logout(user.jti);
+  }
+
+  //!
+  //! REFRESH ENDPOINT
+  @Post("refresh")
+  @Security("jwt_without_verification")
+  @OperationId("refreshUser")
+  public async refresh(
+    @Request() request: ExpressRequest,
+    @Body() requestBody: RefreshParams
+  ): Promise<UserAndCredentials> {
+    this.setStatus(StatusCodes.OK);
+    const user = request.user as AuthenticatedUser;
+    return new AuthService().refresh(requestBody, user);
   }
 
   // TODO: remove this dummy endpoint later when

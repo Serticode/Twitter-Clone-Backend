@@ -45,12 +45,21 @@ let AuthController = class AuthController extends tsoa_1.Controller {
             return new auth_service_1.default().login(requestBody);
         });
     }
-    //! DELETE / LOGOUT END POINT
+    //! LOGOUT END POINT
     logout(request) {
         return __awaiter(this, void 0, void 0, function* () {
             this.setStatus(http_status_codes_1.StatusCodes.NO_CONTENT);
             const user = request.user;
             yield new auth_service_1.default().logout(user.jti);
+        });
+    }
+    //!
+    //! REFRESH ENDPOINT
+    refresh(request, requestBody) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.setStatus(http_status_codes_1.StatusCodes.OK);
+            const user = request.user;
+            return new auth_service_1.default().refresh(requestBody, user);
         });
     }
     // TODO: remove this dummy endpoint later when
@@ -94,6 +103,16 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "logout", null);
+__decorate([
+    (0, tsoa_1.Post)("refresh"),
+    (0, tsoa_1.Security)("jwt_without_verification"),
+    (0, tsoa_1.OperationId)("refreshUser"),
+    __param(0, (0, tsoa_1.Request)()),
+    __param(1, (0, tsoa_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "refresh", null);
 __decorate([
     (0, tsoa_1.Post)("dummy"),
     (0, tsoa_1.OperationId)("dummy"),

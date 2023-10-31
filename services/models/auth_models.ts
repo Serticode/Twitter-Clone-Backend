@@ -35,3 +35,10 @@ export interface LoginParams {
   email: string;
   password: string;
 }
+
+//!
+//! REFRESH PARAMS
+export interface RefreshParams {
+  email: string;
+  refreshToken: string;
+}
