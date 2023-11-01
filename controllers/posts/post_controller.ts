@@ -1,9 +1,13 @@
-import { Request as ExpressRequest } from "express";
+import {
+  Request as ExpressRequest,
+  Response as ExpressResponse,
+} from "express";
 import { StatusCodes } from "http-status-codes";
 import {
   Body,
   Controller,
   Delete,
+  Get,
   OperationId,
   Patch,
   Path,
@@ -109,5 +113,51 @@ export class PostsController extends Controller {
     const user = request.user as AuthenticatedUser;
     const userId = user.id;
     return new PostsService().attachToPost(userId, postId, request as any);
+  }
+
+  //!
+  //!
+  /**
+   * Grabs an attachment from a post
+   */
+  @Response(StatusCodes.OK)
+  @Response(StatusCodes.NOT_FOUND, "Photo not found")
+  @Get("/attachment/{postId}")
+  @OperationId("getPostAttachment")
+  @Security("jwt")
+  public async getPostAttachment(
+    @Path() postId: string,
+    @Request() request: ExpressRequest
+  ): Promise<void> {
+    const photoInfo = await new PostsService().getPostAttachment(postId);
+    const response = request.res as ExpressResponse;
+    return new Promise<void>((resolve, reject) => {
+      response.sendFile(photoInfo.photoName, photoInfo.options, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  //!
+  //!
+  /**
+   * Deletes a post belonging to the current user.
+   */
+  @Delete("/{postId}")
+  @OperationId("deletePost")
+  @Security("jwt")
+  @Response(StatusCodes.OK, "Post deleted")
+  @Response(StatusCodes.NOT_FOUND, "Post not found")
+  public async deletePost(
+    @Path() postId: string,
+    @Request() request: ExpressRequest
+  ): Promise<PostModel> {
+    const user = request.user as AuthenticatedUser;
+    const userId = user.id;
+    return new PostsService().deletePost(userId, postId);
   }
 }

@@ -1,3 +1,4 @@
+export { AttachmentNotFoundError } from "./attachment_not_found";
 export { BadRequestError } from "./bad_request_error";
 export { CustomApiError } from "./custom_api_errors";
 export { InternalServerError } from "./internal_server_error";

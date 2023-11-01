@@ -1,13 +1,15 @@
 import { UploadedFile } from "express-fileupload";
-import { mkdir } from "node:fs/promises";
+import { mkdir, stat, unlink } from "node:fs/promises";
 import {
   getAttachmentPath,
+  getAttachmentPhotoName,
   getAttachmentsRootDir,
 } from "../../controllers/utils/utils";
 import Attachment from "../../database/models/attachment/attachment";
 import Post from "../../database/models/posts/posts";
 import Reaction from "../../database/models/reactions/reaction";
 import {
+  AttachmentNotFoundError,
   InternalServerError,
   InvalidInputError,
   InvalidMimeTypeError,
@@ -19,6 +21,7 @@ import {
 import {
   CreatePostParams,
   CreateReactionParams,
+  PostAttachmentInfo,
   PostType,
   Attachment as TSOAAttachmentModel,
   Post as TSOAPostModel,
@@ -163,5 +166,92 @@ export default class PostsService {
       await Attachment.findByIdAndDelete(attachmentId);
       throw new InternalServerError();
     }
+  }
+
+  //!
+  //! FETCH POST ATTACHMENT
+  public async getPostAttachment(postId: String): Promise<PostAttachmentInfo> {
+    // find a post the given post ID that has an attachment
+    const post = await Post.findOne({ _id: postId })
+      .where("attachmentId")
+      .ne(null); // ne = not-equal
+
+    if (!post) {
+      throw new PostNotFoundError();
+    }
+
+    const attachment = await Attachment.findOne({ _id: post.attachmentId });
+
+    if (!attachment) {
+      throw new AttachmentNotFoundError();
+    }
+
+    const attachmentId = attachment._id;
+
+    const photoPath = getAttachmentPath(attachmentId);
+
+    try {
+      const status = await stat(photoPath);
+      const isFile = status.isFile();
+      if (!isFile) {
+        throw new Error();
+      }
+
+      const photoName = getAttachmentPhotoName(attachmentId);
+      const options = {
+        root: getAttachmentsRootDir(),
+        dotfiles: "deny",
+        headers: {
+          "x-timestamp": Date.now(),
+          "x-sent": true,
+        },
+      };
+      return {
+        photoName,
+        options,
+      };
+    } catch {
+      throw new AttachmentNotFoundError();
+    }
+  }
+
+  //!
+  //!
+  public async deletePost(
+    userId: string,
+    postId: string
+  ): Promise<TSOAPostModel> {
+    // can only delete own posts
+
+    // find the post, with a given ID, that is made by the given user
+    const post = await Post.findOne({ _id: postId, userId: userId });
+
+    if (!post) {
+      throw new PostNotFoundError();
+    }
+
+    // first delete all the reposts of this post where the repost
+    // doesn't have its own text. Keep all replies intact.
+    await Post.deleteMany({
+      originalPostId: postId,
+      type: "repost",
+      text: null,
+    });
+
+    // delete the attachment if it exists
+    const attachmentId = post.attachmentId;
+    if (attachmentId) {
+      const path = getAttachmentPath(attachmentId.toString());
+      try {
+        await unlink(path);
+      } catch (err) {
+        // silently fail
+      }
+    }
+
+    // delete the post
+    await Post.findByIdAndDelete(postId);
+
+    return post.toJSON() as TSOAPostModel;
   }
 }
