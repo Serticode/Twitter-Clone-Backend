@@ -37,15 +37,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importStar(require("express"));
+const express_fileupload_1 = __importDefault(require("express-fileupload"));
+const swaggerUI = __importStar(require("swagger-ui-express"));
 const db_connect_1 = require("./database/db_connect");
+const error_handler_1 = require("./middleware/error_handler");
+const routes_1 = require("./routes/routes");
+const swaggerJson = __importStar(require("./tsoa/tsoa.json"));
+//! DOT ENV
 dotenv_1.default.config();
 const app = (0, express_1.default)();
+//!
+//! LIST OF EVERYTHING THE APP USES
 //! MIDDLE WARE FOR PARSING JSON
 app.use((0, express_1.urlencoded)({ extended: true }));
 app.use((0, express_1.json)());
 //! SWAGGER UI
-const swaggerUI = __importStar(require("swagger-ui-express"));
-const swaggerJson = __importStar(require("./tsoa/tsoa.json"));
 //! SERVING SWAGGER UI
 app.use(["/openapi", "/docs", "/swagger"], swaggerUI.serve, swaggerUI.setup(swaggerJson));
 //! SERVE SWAGGER  JSON
@@ -53,10 +59,13 @@ app.get("/swagger.json", (_, res) => {
     res.setHeader("Content-Type", "application/json");
     res.sendFile(__dirname + "/tsoa/tsoa.json");
 });
-const routes_1 = require("./routes/routes");
+//! FILE UPLOADING SERVICE
+app.use((0, express_fileupload_1.default)({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+}));
 (0, routes_1.RegisterRoutes)(app);
 //! ERROR HANDLER
-const error_handler_1 = require("./middleware/error_handler");
 app.use(error_handler_1.errorHandlerMiddleware);
 const port = process.env.PORT || process.env.BACKUP_PORT;
 const start = () => __awaiter(void 0, void 0, void 0, function* () {

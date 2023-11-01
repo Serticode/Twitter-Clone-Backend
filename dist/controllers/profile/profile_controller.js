@@ -27,6 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProfileController = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const tsoa_1 = require("tsoa");
+const errors_1 = require("../../errors");
 const profile_service_1 = __importDefault(require("../../services/profile/profile_service"));
 let ProfileController = class ProfileController extends tsoa_1.Controller {
     //!
@@ -44,6 +45,36 @@ let ProfileController = class ProfileController extends tsoa_1.Controller {
             this.setStatus(http_status_codes_1.StatusCodes.OK);
             const user = request.user;
             return new profile_service_1.default().set(user.id, requestBody);
+        });
+    }
+    //!
+    //! UPLOAD PROFILE PHOTO
+    setProfilePhoto(request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!request.files || Object.keys(request.files).length === 0) {
+                throw new errors_1.NoPhotoUploadedError();
+            }
+            this.setStatus(http_status_codes_1.StatusCodes.OK);
+            const user = request.user;
+            return new profile_service_1.default().setPhoto(user.id, request);
+        });
+    }
+    //!
+    //! GET PROFILE PHOTO
+    getProfilePhoto(userId, request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const photoInfo = yield new profile_service_1.default().getPhoto(userId);
+            const response = request.res;
+            return new Promise((resolve, reject) => {
+                response.sendFile(photoInfo.photoName, photoInfo.options, (err) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        resolve();
+                    }
+                });
+            });
         });
     }
 };
@@ -69,6 +100,30 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], ProfileController.prototype, "setProfile", null);
+__decorate([
+    (0, tsoa_1.Post)("photo"),
+    (0, tsoa_1.OperationId)("setProfilePhoto"),
+    (0, tsoa_1.Security)("jwt"),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.BAD_REQUEST, "No photo uploaded"),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.BAD_REQUEST, "Invalid mime type"),
+    __param(0, (0, tsoa_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ProfileController.prototype, "setProfilePhoto", null);
+__decorate([
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.NOT_FOUND, "Photo not found"),
+    (0, tsoa_1.Get)("photo/{userId}"),
+    (0, tsoa_1.OperationId)("getProfilePhoto"),
+    (0, tsoa_1.Security)("jwt"),
+    __param(0, (0, tsoa_1.Path)()),
+    __param(1, (0, tsoa_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], ProfileController.prototype, "getProfilePhoto", null);
 exports.ProfileController = ProfileController = __decorate([
     (0, tsoa_1.Route)("/api/v1/profile"),
     (0, tsoa_1.Tags)("Profile")

@@ -1,6 +1,20 @@
+import { UploadedFile } from "express-fileupload";
+import { mkdir, stat } from "node:fs/promises";
+import {
+  getProfilePhotosRootDir,
+  getUserIdProfilePhotoName,
+  getUserIdProfilePhotoPath,
+} from "../../controllers/utils/utils";
 import Profile from "../../database/models/profile/profile_model";
-import { UserProfileNotFoundError } from "../../errors/profile_not_found";
-import { Profile as ProfileModel } from "../models/profile_model";
+import {
+  InvalidMimeTypeError,
+  PhotoNotFoundError,
+  UserProfileNotFoundError,
+} from "../../errors";
+import {
+  Profile as ProfileModel,
+  ProfilePhotoInfo,
+} from "../models/profile_model";
 
 export default class ProfileService {
   //!
@@ -30,5 +44,62 @@ export default class ProfileService {
       { upsert: true, new: true, runValidators: true }
     );
     return profile.toJSON() as ProfileModel;
+  }
+
+  //!
+  //! SAVE PROFILE PHOTO
+  public async setPhoto(
+    userId: string,
+    req: { files: { photo: UploadedFile } }
+  ): Promise<void> {
+    const { photo } = req.files;
+
+    if (photo.mimetype !== "image/jpeg") {
+      throw new InvalidMimeTypeError();
+    }
+
+    const uploadDir = getProfilePhotosRootDir();
+    const uploadPath = getUserIdProfilePhotoPath(userId);
+
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        await mkdir(uploadDir, { recursive: true });
+        await photo.mv(uploadPath);
+        resolve();
+      } catch {
+        reject();
+      }
+    });
+  }
+
+  //!
+  //! GET PROFILE PHOTO
+
+  public async getPhoto(userId: string): Promise<ProfilePhotoInfo> {
+    const photoPath = getUserIdProfilePhotoPath(userId);
+
+    try {
+      const status = await stat(photoPath);
+      const isFile = status.isFile();
+      if (!isFile) {
+        throw new Error();
+      }
+
+      const photoName = getUserIdProfilePhotoName(userId);
+      const options = {
+        root: getProfilePhotosRootDir(),
+        dotfiles: "deny",
+        headers: {
+          "x-timestamp": Date.now(),
+          "x-sent": true,
+        },
+      };
+      return {
+        photoName,
+        options,
+      };
+    } catch {
+      throw new PhotoNotFoundError();
+    }
   }
 }

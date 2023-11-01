@@ -1,18 +1,23 @@
 import dotenv from "dotenv";
 import express, { json, urlencoded } from "express";
+import fileUpload from "express-fileupload";
+import * as swaggerUI from "swagger-ui-express";
 import { connectToDatabase } from "./database/db_connect";
+import { errorHandlerMiddleware } from "./middleware/error_handler";
+import { RegisterRoutes } from "./routes/routes";
+import * as swaggerJson from "./tsoa/tsoa.json";
 
+//! DOT ENV
 dotenv.config();
 const app = express();
 
+//!
+//! LIST OF EVERYTHING THE APP USES
 //! MIDDLE WARE FOR PARSING JSON
 app.use(urlencoded({ extended: true }));
 app.use(json());
 
 //! SWAGGER UI
-import * as swaggerUI from "swagger-ui-express";
-import * as swaggerJson from "./tsoa/tsoa.json";
-
 //! SERVING SWAGGER UI
 app.use(
   ["/openapi", "/docs", "/swagger"],
@@ -26,11 +31,17 @@ app.get("/swagger.json", (_, res) => {
   res.sendFile(__dirname + "/tsoa/tsoa.json");
 });
 
-import { RegisterRoutes } from "./routes/routes";
+//! FILE UPLOADING SERVICE
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
+
 RegisterRoutes(app);
 
 //! ERROR HANDLER
-import { errorHandlerMiddleware } from "./middleware/error_handler";
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || process.env.BACKUP_PORT;

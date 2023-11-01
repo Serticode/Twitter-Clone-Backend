@@ -5,3 +5,9 @@ export interface Profile {
   location?: string;
   website?: string;
 }
+
+//! PROFILE PHOTO INFO
+export interface ProfilePhotoInfo {
+  photoName: string;
+  options: any;
+}
