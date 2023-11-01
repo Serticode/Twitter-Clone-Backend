@@ -1,5 +1,6 @@
 export { BadRequestError } from "./bad_request_error";
 export { CustomApiError } from "./custom_api_errors";
+export { InternalServerError } from "./internal_server_error";
 export { InvalidInputError } from "./invalid_input_error";
 export { InvalidMimeTypeError } from "./invalid_mime_type";
 export { NoPhotoUploadedError } from "./no_photo_uploaded";

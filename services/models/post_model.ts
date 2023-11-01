@@ -34,3 +34,8 @@ export interface Reaction {
 export interface CreateReactionParams {
   type: ReactionType;
 }
+
+export interface Attachment {
+  id: string;
+  mimeType: string;
+}

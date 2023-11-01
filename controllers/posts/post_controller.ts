@@ -5,6 +5,7 @@ import {
   Controller,
   Delete,
   OperationId,
+  Patch,
   Path,
   Post,
   Request,
@@ -15,6 +16,7 @@ import {
 } from "tsoa";
 import AuthenticatedUser from "../../middleware/models/authenticated_user";
 import {
+  Attachment as AttachmentModel,
   CreatePostParams,
   CreateReactionParams,
   Post as PostModel,
@@ -84,5 +86,28 @@ export class PostsController extends Controller {
     const user = request.user as AuthenticatedUser;
     const userId = user.id;
     return new PostsService().unreactToPost(userId, postId);
+  }
+
+  //!
+  //!
+  /*
+   * Attaches a photo to a post or a reply. Will throw an error if
+   * the post is a repost (post.type == post | reply)
+   * Can attach at most once. Once a photo is attached,
+   * it cannot be changed or deleted.
+   */
+  @Patch("/{postId}")
+  @OperationId("attachToPost")
+  @Security("jwt")
+  @Response(StatusCodes.CREATED)
+  @Response(StatusCodes.INTERNAL_SERVER_ERROR, "Could not attach photo to post")
+  @Response(StatusCodes.NOT_FOUND, "Post not found")
+  public async attachToPost(
+    @Path() postId: string,
+    @Request() request: ExpressRequest
+  ): Promise<AttachmentModel> {
+    const user = request.user as AuthenticatedUser;
+    const userId = user.id;
+    return new PostsService().attachToPost(userId, postId, request as any);
   }
 }
