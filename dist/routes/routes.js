@@ -17,6 +17,8 @@ const runtime_1 = require("@tsoa/runtime");
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 const auth_controller_1 = require("./../controllers/auth/auth_controller");
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+const post_controller_1 = require("./../controllers/posts/post_controller");
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 const profile_controller_1 = require("./../controllers/profile/profile_controller");
 const authentication_1 = require("./../middleware/authentication");
 // @ts-ignore - no great way to install types from subpackage
@@ -69,6 +71,35 @@ const models = {
         "properties": {
             "email": { "dataType": "string", "required": true },
             "refreshToken": { "dataType": "string", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PostType": {
+        "dataType": "refEnum",
+        "enums": ["post", "repost", "reply"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PostModel": {
+        "dataType": "refObject",
+        "properties": {
+            "id": { "dataType": "string", "required": true },
+            "userId": { "dataType": "string", "required": true },
+            "text": { "dataType": "string", "required": true },
+            "type": { "ref": "PostType", "required": true },
+            "createdAt": { "dataType": "datetime", "required": true },
+            "updatedAt": { "dataType": "datetime", "required": true },
+            "attachmentId": { "dataType": "string" },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreatePostParams": {
+        "dataType": "refObject",
+        "properties": {
+            "text": { "dataType": "string", "required": true },
+            "type": { "ref": "PostType", "required": true },
+            "originalPostId": { "dataType": "string" },
         },
         "additionalProperties": false,
     },
@@ -168,6 +199,24 @@ function RegisterRoutes(app) {
             validatedArgs = getValidatedArgs(args, request, response);
             const controller = new auth_controller_1.AuthController();
             const promise = controller.dummy.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/v1/posts', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController)), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController.prototype.createPost)), function PostsController_createPost(request, response, next) {
+        const args = {
+            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+            body: { "in": "body", "name": "body", "required": true, "ref": "CreatePostParams" },
+        };
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new post_controller_1.PostsController();
+            const promise = controller.createPost.apply(controller, validatedArgs);
             promiseHandler(controller, promise, response, undefined, next);
         }
         catch (err) {

@@ -1,7 +1,9 @@
 export { BadRequestError } from "./bad_request_error";
 export { CustomApiError } from "./custom_api_errors";
+export { InvalidInputError } from "./invalid_input_error";
 export { InvalidMimeTypeError } from "./invalid_mime_type";
 export { NoPhotoUploadedError } from "./no_photo_uploaded";
 export { PhotoNotFoundError } from "./photo_not_found";
+export { OriginalPostIdMissingError } from "./post_id_missing";
 export { UserProfileNotFoundError } from "./profile_not_found";
 export { UnauthorizedError } from "./unauthorized_error";

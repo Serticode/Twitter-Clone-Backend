@@ -5,6 +5,8 @@
     "jwtid",
     "maxlength",
     "openapi",
+    "repost",
+    "REPOSTS",
     "tsoa",
     "uuidv"
   ]
