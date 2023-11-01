@@ -104,6 +104,30 @@ const models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ReactionType": {
+        "dataType": "refEnum",
+        "enums": ["like"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ReactionModel": {
+        "dataType": "refObject",
+        "properties": {
+            "id": { "dataType": "string", "required": true },
+            "userId": { "dataType": "string", "required": true },
+            "postId": { "dataType": "string", "required": true },
+            "type": { "ref": "ReactionType", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateReactionParams": {
+        "dataType": "refObject",
+        "properties": {
+            "type": { "ref": "ReactionType", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Profile": {
         "dataType": "refObject",
         "properties": {
@@ -217,6 +241,43 @@ function RegisterRoutes(app) {
             validatedArgs = getValidatedArgs(args, request, response);
             const controller = new post_controller_1.PostsController();
             const promise = controller.createPost.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/v1/posts/react/:postId', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController)), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController.prototype.reactToPost)), function PostsController_reactToPost(request, response, next) {
+        const args = {
+            postId: { "in": "path", "name": "postId", "required": true, "dataType": "string" },
+            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+            body: { "in": "body", "name": "body", "required": true, "ref": "CreateReactionParams" },
+        };
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new post_controller_1.PostsController();
+            const promise = controller.reactToPost.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.delete('/api/v1/posts/react/:postId', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController)), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController.prototype.unreactToPost)), function PostsController_unreactToPost(request, response, next) {
+        const args = {
+            postId: { "in": "path", "name": "postId", "required": true, "dataType": "string" },
+            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+        };
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new post_controller_1.PostsController();
+            const promise = controller.unreactToPost.apply(controller, validatedArgs);
             promiseHandler(controller, promise, response, undefined, next);
         }
         catch (err) {

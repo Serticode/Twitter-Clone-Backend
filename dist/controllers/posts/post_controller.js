@@ -26,8 +26,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostsController = void 0;
 const http_status_codes_1 = require("http-status-codes");
-const post_service_1 = __importDefault(require("../../services/posts/post_service"));
 const tsoa_1 = require("tsoa");
+const post_service_1 = __importDefault(require("../../services/posts/post_service"));
 //!
 //! HANDLES POSTS ENDPOINT
 let PostsController = class PostsController extends tsoa_1.Controller {
@@ -44,6 +44,30 @@ let PostsController = class PostsController extends tsoa_1.Controller {
             return new post_service_1.default().createPost(user.id, body);
         });
     }
+    //!
+    //! REACT TO POST
+    /*
+     * Reacts to a post with a reaction specified by the body.
+     */
+    reactToPost(postId, request, body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = request.user;
+            const userId = user.id;
+            return new post_service_1.default().reactToPost(userId, postId, body);
+        });
+    }
+    //!
+    //! UNREACT TO POST
+    /*
+     * Deletes an existing reaction on a post.
+     */
+    unreactToPost(postId, request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = request.user;
+            const userId = user.id;
+            return new post_service_1.default().unreactToPost(userId, postId);
+        });
+    }
 };
 exports.PostsController = PostsController;
 __decorate([
@@ -58,6 +82,31 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "createPost", null);
+__decorate([
+    (0, tsoa_1.Post)("/react/{postId}"),
+    (0, tsoa_1.OperationId)("reactToPost"),
+    (0, tsoa_1.Security)("jwt"),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.CREATED),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.NOT_FOUND, "Post not found"),
+    __param(0, (0, tsoa_1.Path)()),
+    __param(1, (0, tsoa_1.Request)()),
+    __param(2, (0, tsoa_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], PostsController.prototype, "reactToPost", null);
+__decorate([
+    (0, tsoa_1.Delete)("/react/{postId}"),
+    (0, tsoa_1.OperationId)("unreactToPost"),
+    (0, tsoa_1.Security)("jwt"),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.NOT_FOUND, "Reaction not found"),
+    __param(0, (0, tsoa_1.Path)()),
+    __param(1, (0, tsoa_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], PostsController.prototype, "unreactToPost", null);
 exports.PostsController = PostsController = __decorate([
     (0, tsoa_1.Route)("/api/v1/posts"),
     (0, tsoa_1.Tags)("Posts")

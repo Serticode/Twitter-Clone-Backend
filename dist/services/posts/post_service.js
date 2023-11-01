@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const posts_1 = __importDefault(require("../../database/models/posts/posts"));
+const reaction_1 = __importDefault(require("../../database/models/reactions/reaction"));
 const errors_1 = require("../../errors");
 const post_model_1 = require("../models/post_model");
 class PostsService {
@@ -45,6 +46,34 @@ class PostsService {
                 default:
                     throw new errors_1.InvalidInputError("type", "PostType");
             }
+        });
+    }
+    //!
+    //! REACT TO POST - LIKE A POST
+    reactToPost(userId, postId, params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const post = yield posts_1.default.findById(postId);
+            if (!post) {
+                throw new errors_1.PostNotFoundError();
+            }
+            const query = { userId, postId };
+            const reaction = yield reaction_1.default.findOneAndUpdate(query, {
+                userId,
+                postId,
+                type: params.type,
+            }, { upsert: true, new: true });
+            return reaction.toJSON();
+        });
+    }
+    //!
+    //! UNREACT TO POST - UNLIKE A POST
+    unreactToPost(userId, postId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const reaction = yield reaction_1.default.findOneAndDelete({ userId, postId });
+            if (!reaction) {
+                throw new errors_1.ReactionNotFoundError();
+            }
+            return reaction.toJSON();
         });
     }
 }

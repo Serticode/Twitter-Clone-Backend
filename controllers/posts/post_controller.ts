@@ -1,10 +1,11 @@
+import { Request as ExpressRequest } from "express";
 import { StatusCodes } from "http-status-codes";
-import PostsService from "../../services/posts/post_service";
-
 import {
   Body,
   Controller,
+  Delete,
   OperationId,
+  Path,
   Post,
   Request,
   Response,
@@ -12,13 +13,14 @@ import {
   Security,
   Tags,
 } from "tsoa";
-
-import { Request as ExpressRequest } from "express";
 import AuthenticatedUser from "../../middleware/models/authenticated_user";
 import {
   CreatePostParams,
+  CreateReactionParams,
   Post as PostModel,
+  Reaction as ReactionModel,
 } from "../../services/models/post_model";
+import PostsService from "../../services/posts/post_service";
 
 //!
 //! HANDLES POSTS ENDPOINT
@@ -43,5 +45,44 @@ export class PostsController extends Controller {
   ): Promise<PostModel> {
     const user = request.user as AuthenticatedUser;
     return new PostsService().createPost(user.id, body);
+  }
+
+  //!
+  //! REACT TO POST
+  /*
+   * Reacts to a post with a reaction specified by the body.
+   */
+  @Post("/react/{postId}")
+  @OperationId("reactToPost")
+  @Security("jwt")
+  @Response(StatusCodes.CREATED)
+  @Response(StatusCodes.NOT_FOUND, "Post not found")
+  public async reactToPost(
+    @Path() postId: string,
+    @Request() request: ExpressRequest,
+    @Body() body: CreateReactionParams
+  ): Promise<ReactionModel> {
+    const user = request.user as AuthenticatedUser;
+    const userId = user.id;
+    return new PostsService().reactToPost(userId, postId, body);
+  }
+
+  //!
+  //! UNREACT TO POST
+  /*
+   * Deletes an existing reaction on a post.
+   */
+  @Delete("/react/{postId}")
+  @OperationId("unreactToPost")
+  @Security("jwt")
+  @Response(StatusCodes.OK)
+  @Response(StatusCodes.NOT_FOUND, "Reaction not found")
+  public async unreactToPost(
+    @Path() postId: string,
+    @Request() request: ExpressRequest
+  ): Promise<ReactionModel> {
+    const user = request.user as AuthenticatedUser;
+    const userId = user.id;
+    return new PostsService().unreactToPost(userId, postId);
   }
 }
