@@ -1,5 +1,5 @@
 import { UploadedFile } from "express-fileupload";
-import { mkdir, stat } from "node:fs/promises";
+import { mkdir, stat, unlink } from "node:fs/promises";
 import {
   getProfilePhotosRootDir,
   getUserIdProfilePhotoName,
@@ -74,7 +74,6 @@ export default class ProfileService {
 
   //!
   //! GET PROFILE PHOTO
-
   public async getPhoto(userId: string): Promise<ProfilePhotoInfo> {
     const photoPath = getUserIdProfilePhotoPath(userId);
 
@@ -98,6 +97,18 @@ export default class ProfileService {
         photoName,
         options,
       };
+    } catch {
+      throw new PhotoNotFoundError();
+    }
+  }
+
+  //!
+  //! DELETE PHOTO
+  public async deletePhoto(userId: string): Promise<void> {
+    const photoPath = getUserIdProfilePhotoPath(userId);
+
+    try {
+      await unlink(photoPath);
     } catch {
       throw new PhotoNotFoundError();
     }

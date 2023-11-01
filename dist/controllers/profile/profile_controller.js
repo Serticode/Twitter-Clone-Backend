@@ -77,6 +77,15 @@ let ProfileController = class ProfileController extends tsoa_1.Controller {
             });
         });
     }
+    //!
+    //! DELETE PROFILE
+    deleteProfilePhoto(request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = request.user;
+            this.setStatus(http_status_codes_1.StatusCodes.OK);
+            return new profile_service_1.default().deletePhoto(user.id);
+        });
+    }
 };
 exports.ProfileController = ProfileController;
 __decorate([
@@ -124,6 +133,17 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], ProfileController.prototype, "getProfilePhoto", null);
+__decorate([
+    (0, tsoa_1.Delete)("photo"),
+    (0, tsoa_1.Security)("jwt"),
+    (0, tsoa_1.OperationId)("deleteProfilePhoto"),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.NOT_FOUND, "Photo not found"),
+    __param(0, (0, tsoa_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ProfileController.prototype, "deleteProfilePhoto", null);
 exports.ProfileController = ProfileController = __decorate([
     (0, tsoa_1.Route)("/api/v1/profile"),
     (0, tsoa_1.Tags)("Profile")

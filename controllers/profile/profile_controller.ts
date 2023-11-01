@@ -6,6 +6,7 @@ import { StatusCodes } from "http-status-codes";
 import {
   Body,
   Controller,
+  Delete,
   Get,
   OperationId,
   Path,
@@ -90,5 +91,20 @@ export class ProfileController extends Controller {
         }
       });
     });
+  }
+
+  //!
+  //! DELETE PROFILE
+  @Delete("photo")
+  @Security("jwt")
+  @OperationId("deleteProfilePhoto")
+  @Response(StatusCodes.OK)
+  @Response(StatusCodes.NOT_FOUND, "Photo not found")
+  public async deleteProfilePhoto(
+    @Request() request: ExpressRequest
+  ): Promise<void> {
+    const user = request.user as { id: string };
+    this.setStatus(StatusCodes.OK);
+    return new ProfileService().deletePhoto(user.id);
   }
 }

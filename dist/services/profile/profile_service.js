@@ -93,5 +93,18 @@ class ProfileService {
             }
         });
     }
+    //!
+    //! DELETE PHOTO
+    deletePhoto(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const photoPath = (0, utils_1.getUserIdProfilePhotoPath)(userId);
+            try {
+                yield (0, promises_1.unlink)(photoPath);
+            }
+            catch (_a) {
+                throw new errors_1.PhotoNotFoundError();
+            }
+        });
+    }
 }
 exports.default = ProfileService;
