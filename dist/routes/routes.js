@@ -16,6 +16,8 @@ exports.RegisterRoutes = void 0;
 const runtime_1 = require("@tsoa/runtime");
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 const auth_controller_1 = require("./../controllers/auth/auth_controller");
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+const profile_controller_1 = require("./../controllers/profile/profile_controller");
 const authentication_1 = require("./../middleware/authentication");
 // @ts-ignore - no great way to install types from subpackage
 const promiseAny = require('promise.any');
@@ -58,6 +60,25 @@ const models = {
         "properties": {
             "email": { "dataType": "string", "required": true },
             "password": { "dataType": "string", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "RefreshParams": {
+        "dataType": "refObject",
+        "properties": {
+            "email": { "dataType": "string", "required": true },
+            "refreshToken": { "dataType": "string", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Profile": {
+        "dataType": "refObject",
+        "properties": {
+            "bio": { "dataType": "string" },
+            "location": { "dataType": "string" },
+            "website": { "dataType": "string" },
         },
         "additionalProperties": false,
     },
@@ -121,6 +142,24 @@ function RegisterRoutes(app) {
         }
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/v1/auth/refresh', authenticateMiddleware([{ "jwt_without_verification": [] }]), ...((0, runtime_1.fetchMiddlewares)(auth_controller_1.AuthController)), ...((0, runtime_1.fetchMiddlewares)(auth_controller_1.AuthController.prototype.refresh)), function AuthController_refresh(request, response, next) {
+        const args = {
+            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+            requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "RefreshParams" },
+        };
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new auth_controller_1.AuthController();
+            const promise = controller.refresh.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.post('/api/v1/auth/dummy', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(auth_controller_1.AuthController)), ...((0, runtime_1.fetchMiddlewares)(auth_controller_1.AuthController.prototype.dummy)), function AuthController_dummy(request, response, next) {
         const args = {};
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -129,6 +168,41 @@ function RegisterRoutes(app) {
             validatedArgs = getValidatedArgs(args, request, response);
             const controller = new auth_controller_1.AuthController();
             const promise = controller.dummy.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/v1/profile/info/:userId', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController)), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController.prototype.get)), function ProfileController_get(request, response, next) {
+        const args = {
+            userId: { "in": "path", "name": "userId", "required": true, "dataType": "string" },
+        };
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new profile_controller_1.ProfileController();
+            const promise = controller.get.apply(controller, validatedArgs);
+            promiseHandler(controller, promise, response, undefined, next);
+        }
+        catch (err) {
+            return next(err);
+        }
+    });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/v1/profile/info', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController)), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController.prototype.setProfile)), function ProfileController_setProfile(request, response, next) {
+        const args = {
+            request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+            requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "Profile" },
+        };
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        let validatedArgs = [];
+        try {
+            validatedArgs = getValidatedArgs(args, request, response);
+            const controller = new profile_controller_1.ProfileController();
+            const promise = controller.setProfile.apply(controller, validatedArgs);
             promiseHandler(controller, promise, response, undefined, next);
         }
         catch (err) {
