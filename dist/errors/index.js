@@ -1,10 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UnauthorizedError = exports.ReactionNotFoundError = exports.UserProfileNotFoundError = exports.PostNotFoundError = exports.OriginalPostIdMissingError = exports.PhotoNotFoundError = exports.NoPhotoUploadedError = exports.InvalidMimeTypeError = exports.InvalidInputError = exports.CustomApiError = exports.BadRequestError = void 0;
+exports.UnauthorizedError = exports.ReactionNotFoundError = exports.UserProfileNotFoundError = exports.PostNotFoundError = exports.OriginalPostIdMissingError = exports.PhotoNotFoundError = exports.NoPhotoUploadedError = exports.InvalidMimeTypeError = exports.InvalidInputError = exports.InternalServerError = exports.CustomApiError = exports.BadRequestError = exports.AttachmentNotFoundError = void 0;
+var attachment_not_found_1 = require("./attachment_not_found");
+Object.defineProperty(exports, "AttachmentNotFoundError", { enumerable: true, get: function () { return attachment_not_found_1.AttachmentNotFoundError; } });
 var bad_request_error_1 = require("./bad_request_error");
 Object.defineProperty(exports, "BadRequestError", { enumerable: true, get: function () { return bad_request_error_1.BadRequestError; } });
 var custom_api_errors_1 = require("./custom_api_errors");
 Object.defineProperty(exports, "CustomApiError", { enumerable: true, get: function () { return custom_api_errors_1.CustomApiError; } });
+var internal_server_error_1 = require("./internal_server_error");
+Object.defineProperty(exports, "InternalServerError", { enumerable: true, get: function () { return internal_server_error_1.InternalServerError; } });
 var invalid_input_error_1 = require("./invalid_input_error");
 Object.defineProperty(exports, "InvalidInputError", { enumerable: true, get: function () { return invalid_input_error_1.InvalidInputError; } });
 var invalid_mime_type_1 = require("./invalid_mime_type");

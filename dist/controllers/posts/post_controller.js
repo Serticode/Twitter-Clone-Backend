@@ -68,6 +68,54 @@ let PostsController = class PostsController extends tsoa_1.Controller {
             return new post_service_1.default().unreactToPost(userId, postId);
         });
     }
+    //!
+    //!
+    /*
+     * Attaches a photo to a post or a reply. Will throw an error if
+     * the post is a repost (post.type == post | reply)
+     * Can attach at most once. Once a photo is attached,
+     * it cannot be changed or deleted.
+     */
+    attachToPost(postId, request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = request.user;
+            const userId = user.id;
+            return new post_service_1.default().attachToPost(userId, postId, request);
+        });
+    }
+    //!
+    //!
+    /**
+     * Grabs an attachment from a post
+     */
+    getPostAttachment(postId, request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const photoInfo = yield new post_service_1.default().getPostAttachment(postId);
+            const response = request.res;
+            return new Promise((resolve, reject) => {
+                response.sendFile(photoInfo.photoName, photoInfo.options, (err) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        resolve();
+                    }
+                });
+            });
+        });
+    }
+    //!
+    //!
+    /**
+     * Deletes a post belonging to the current user.
+     */
+    deletePost(postId, request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = request.user;
+            const userId = user.id;
+            return new post_service_1.default().deletePost(userId, postId);
+        });
+    }
 };
 exports.PostsController = PostsController;
 __decorate([
@@ -107,6 +155,43 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "unreactToPost", null);
+__decorate([
+    (0, tsoa_1.Patch)("/{postId}"),
+    (0, tsoa_1.OperationId)("attachToPost"),
+    (0, tsoa_1.Security)("jwt"),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.CREATED),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, "Could not attach photo to post"),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.NOT_FOUND, "Post not found"),
+    __param(0, (0, tsoa_1.Path)()),
+    __param(1, (0, tsoa_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], PostsController.prototype, "attachToPost", null);
+__decorate([
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.NOT_FOUND, "Photo not found"),
+    (0, tsoa_1.Get)("/attachment/{postId}"),
+    (0, tsoa_1.OperationId)("getPostAttachment"),
+    (0, tsoa_1.Security)("jwt"),
+    __param(0, (0, tsoa_1.Path)()),
+    __param(1, (0, tsoa_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], PostsController.prototype, "getPostAttachment", null);
+__decorate([
+    (0, tsoa_1.Delete)("/{postId}"),
+    (0, tsoa_1.OperationId)("deletePost"),
+    (0, tsoa_1.Security)("jwt"),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK, "Post deleted"),
+    (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.NOT_FOUND, "Post not found"),
+    __param(0, (0, tsoa_1.Path)()),
+    __param(1, (0, tsoa_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], PostsController.prototype, "deletePost", null);
 exports.PostsController = PostsController = __decorate([
     (0, tsoa_1.Route)("/api/v1/posts"),
     (0, tsoa_1.Tags)("Posts")
