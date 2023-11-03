@@ -106,6 +106,72 @@
                 "type": "object",
                 "additionalProperties": false
             },
+            "Follow": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "followerUserId": {
+                        "type": "string"
+                    },
+                    "followingUserId": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "following": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "follower": {
+                        "$ref": "#/components/schemas/User"
+                    }
+                },
+                "required": [
+                    "id",
+                    "followerUserId",
+                    "followingUserId",
+                    "createdAt",
+                    "updatedAt"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "FollowsResponse": {
+                "properties": {
+                    "remainingCount": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "remainingPages": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "count": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "follows": {
+                        "items": {
+                            "$ref": "#/components/schemas/Follow"
+                        },
+                        "type": "array"
+                    }
+                },
+                "required": [
+                    "remainingCount",
+                    "remainingPages",
+                    "count",
+                    "follows"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
             "PostType": {
                 "enum": [
                     "post",
@@ -545,6 +611,190 @@
                     }
                 ],
                 "parameters": []
+            }
+        },
+        "/api/v1/follow/{userId}": {
+            "post": {
+                "operationId": "followUser",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Follow"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "description": "allows a user to follow another user.",
+                "tags": [
+                    "Follow"
+                ],
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "unfollowUser",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Follow"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "description": "Deletes a follow relationship between two users.",
+                "tags": [
+                    "Follow"
+                ],
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/v1/follow/{userId}/following": {
+            "get": {
+                "operationId": "getUserFollowing",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FollowsResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Retrieves the list of users that the specified user is following.",
+                "tags": [
+                    "Follow"
+                ],
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "resultsPerPage",
+                        "required": false,
+                        "schema": {
+                            "format": "double",
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "format": "double",
+                            "type": "number"
+                        }
+                    }
+                ]
+            }
+        },
+        "/api/v1/follow/{userId}/followers": {
+            "get": {
+                "operationId": "getUserFollowers",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FollowsResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Retrieves the list of users that are following the specified user.",
+                "tags": [
+                    "Follow"
+                ],
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "resultsPerPage",
+                        "required": false,
+                        "schema": {
+                            "format": "double",
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "format": "double",
+                            "type": "number"
+                        }
+                    }
+                ]
             }
         },
         "/api/v1/posts": {
