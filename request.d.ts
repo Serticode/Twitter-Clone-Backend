@@ -1,4 +1,4 @@
-import AuthenticatedUser from "middleware/models/authenticated_user";
+import AuthenticatedUser from "src/middleware/models/authenticated_user";
 
 declare global {
   namespace Express {
