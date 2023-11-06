@@ -131,7 +131,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "createPost", null);
 __decorate([
-    (0, tsoa_1.Post)("/react/{postId}"),
+    (0, tsoa_1.Post)("/react/like/{postId}"),
     (0, tsoa_1.OperationId)("reactToPost"),
     (0, tsoa_1.Security)("jwt"),
     (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.CREATED),
@@ -144,7 +144,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "reactToPost", null);
 __decorate([
-    (0, tsoa_1.Delete)("/react/{postId}"),
+    (0, tsoa_1.Delete)("/react/unlike/{postId}"),
     (0, tsoa_1.OperationId)("unreactToPost"),
     (0, tsoa_1.Security)("jwt"),
     (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK),

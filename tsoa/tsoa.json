@@ -601,7 +601,7 @@
 				}
 			}
 		},
-		"/api/v1/auth": {
+		"/api/v1/auth/logout": {
 			"delete": {
 				"operationId": "logoutUser",
 				"responses": {
@@ -656,25 +656,6 @@
 				}
 			}
 		},
-		"/api/v1/auth/dummy": {
-			"post": {
-				"operationId": "dummy",
-				"responses": {
-					"204": {
-						"description": "No content"
-					}
-				},
-				"tags": [
-					"Auth"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			}
-		},
 		"/api/v1/follow/{userId}": {
 			"post": {
 				"operationId": "followUser",
@@ -712,7 +693,9 @@
 						}
 					}
 				]
-			},
+			}
+		},
+		"/api/v1/follow/unfollow/{userId}": {
 			"delete": {
 				"operationId": "unfollowUser",
 				"responses": {
@@ -901,7 +884,7 @@
 				}
 			}
 		},
-		"/api/v1/posts/react/{postId}": {
+		"/api/v1/posts/react/like/{postId}": {
 			"post": {
 				"operationId": "reactToPost",
 				"responses": {
@@ -950,7 +933,9 @@
 						}
 					}
 				}
-			},
+			}
+		},
+		"/api/v1/posts/react/unlike/{postId}": {
 			"delete": {
 				"operationId": "unreactToPost",
 				"responses": {
@@ -1139,7 +1124,7 @@
 				]
 			}
 		},
-		"/api/v1/profile/info": {
+		"/api/v1/profile/updateProfile": {
 			"post": {
 				"operationId": "setProfile",
 				"responses": {
@@ -1175,7 +1160,7 @@
 				}
 			}
 		},
-		"/api/v1/profile/photo": {
+		"/api/v1/profile/uploadPhoto": {
 			"post": {
 				"operationId": "setProfilePhoto",
 				"responses": {
@@ -1187,29 +1172,6 @@
 					},
 					"400": {
 						"description": "Invalid mime type"
-					}
-				},
-				"tags": [
-					"Profile"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			},
-			"delete": {
-				"operationId": "deleteProfilePhoto",
-				"responses": {
-					"200": {
-						"description": ""
-					},
-					"204": {
-						"description": "No content"
-					},
-					"404": {
-						"description": "Photo not found"
 					}
 				},
 				"tags": [
@@ -1255,6 +1217,31 @@
 						}
 					}
 				]
+			}
+		},
+		"/api/v1/profile/deletePhoto": {
+			"delete": {
+				"operationId": "deleteProfilePhoto",
+				"responses": {
+					"200": {
+						"description": ""
+					},
+					"204": {
+						"description": "No content"
+					},
+					"404": {
+						"description": "Photo not found"
+					}
+				},
+				"tags": [
+					"Profile"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
 			}
 		},
 		"/api/v1/query/posts": {
@@ -1475,7 +1462,7 @@
 				]
 			}
 		},
-		"/api/v1/user/username": {
+		"/api/v1/user/setUsername": {
 			"post": {
 				"operationId": "setUsername",
 				"responses": {
@@ -1515,7 +1502,7 @@
 				}
 			}
 		},
-		"/api/v1/user": {
+		"/api/v1/user/deleteUser": {
 			"delete": {
 				"operationId": "deleteUser",
 				"responses": {

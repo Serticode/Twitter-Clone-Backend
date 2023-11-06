@@ -100,7 +100,7 @@ __decorate([
 ], ProfileController.prototype, "get", null);
 __decorate([
     (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK),
-    (0, tsoa_1.Post)("info"),
+    (0, tsoa_1.Post)("updateProfile"),
     (0, tsoa_1.OperationId)("setProfile"),
     (0, tsoa_1.Security)("jwt"),
     __param(0, (0, tsoa_1.Request)()),
@@ -110,7 +110,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ProfileController.prototype, "setProfile", null);
 __decorate([
-    (0, tsoa_1.Post)("photo"),
+    (0, tsoa_1.Post)("uploadPhoto"),
     (0, tsoa_1.OperationId)("setProfilePhoto"),
     (0, tsoa_1.Security)("jwt"),
     (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK),
@@ -134,7 +134,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ProfileController.prototype, "getProfilePhoto", null);
 __decorate([
-    (0, tsoa_1.Delete)("photo"),
+    (0, tsoa_1.Delete)("deletePhoto"),
     (0, tsoa_1.Security)("jwt"),
     (0, tsoa_1.OperationId)("deleteProfilePhoto"),
     (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK),

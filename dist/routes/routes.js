@@ -306,7 +306,7 @@ function RegisterRoutes(app) {
         }
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/auth', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(auth_controller_1.AuthController)), ...((0, runtime_1.fetchMiddlewares)(auth_controller_1.AuthController.prototype.logout)), function AuthController_logout(request, response, next) {
+    app.delete('/api/v1/auth/logout', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(auth_controller_1.AuthController)), ...((0, runtime_1.fetchMiddlewares)(auth_controller_1.AuthController.prototype.logout)), function AuthController_logout(request, response, next) {
         const args = {
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
         };
@@ -341,21 +341,6 @@ function RegisterRoutes(app) {
         }
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/auth/dummy', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(auth_controller_1.AuthController)), ...((0, runtime_1.fetchMiddlewares)(auth_controller_1.AuthController.prototype.dummy)), function AuthController_dummy(request, response, next) {
-        const args = {};
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        let validatedArgs = [];
-        try {
-            validatedArgs = getValidatedArgs(args, request, response);
-            const controller = new auth_controller_1.AuthController();
-            const promise = controller.dummy.apply(controller, validatedArgs);
-            promiseHandler(controller, promise, response, undefined, next);
-        }
-        catch (err) {
-            return next(err);
-        }
-    });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.post('/api/v1/follow/:userId', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(follow_controller_1.FollowController)), ...((0, runtime_1.fetchMiddlewares)(follow_controller_1.FollowController.prototype.followUser)), function FollowController_followUser(request, response, next) {
         const args = {
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
@@ -374,7 +359,7 @@ function RegisterRoutes(app) {
         }
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/follow/:userId', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(follow_controller_1.FollowController)), ...((0, runtime_1.fetchMiddlewares)(follow_controller_1.FollowController.prototype.unfollowUser)), function FollowController_unfollowUser(request, response, next) {
+    app.delete('/api/v1/follow/unfollow/:userId', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(follow_controller_1.FollowController)), ...((0, runtime_1.fetchMiddlewares)(follow_controller_1.FollowController.prototype.unfollowUser)), function FollowController_unfollowUser(request, response, next) {
         const args = {
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             userId: { "in": "path", "name": "userId", "required": true, "dataType": "string" },
@@ -448,7 +433,7 @@ function RegisterRoutes(app) {
         }
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/posts/react/:postId', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController)), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController.prototype.reactToPost)), function PostsController_reactToPost(request, response, next) {
+    app.post('/api/v1/posts/react/like/:postId', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController)), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController.prototype.reactToPost)), function PostsController_reactToPost(request, response, next) {
         const args = {
             postId: { "in": "path", "name": "postId", "required": true, "dataType": "string" },
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
@@ -467,7 +452,7 @@ function RegisterRoutes(app) {
         }
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/posts/react/:postId', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController)), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController.prototype.unreactToPost)), function PostsController_unreactToPost(request, response, next) {
+    app.delete('/api/v1/posts/react/unlike/:postId', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController)), ...((0, runtime_1.fetchMiddlewares)(post_controller_1.PostsController.prototype.unreactToPost)), function PostsController_unreactToPost(request, response, next) {
         const args = {
             postId: { "in": "path", "name": "postId", "required": true, "dataType": "string" },
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
@@ -556,7 +541,7 @@ function RegisterRoutes(app) {
         }
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/profile/info', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController)), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController.prototype.setProfile)), function ProfileController_setProfile(request, response, next) {
+    app.post('/api/v1/profile/updateProfile', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController)), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController.prototype.setProfile)), function ProfileController_setProfile(request, response, next) {
         const args = {
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "Profile" },
@@ -574,7 +559,7 @@ function RegisterRoutes(app) {
         }
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/profile/photo', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController)), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController.prototype.setProfilePhoto)), function ProfileController_setProfilePhoto(request, response, next) {
+    app.post('/api/v1/profile/uploadPhoto', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController)), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController.prototype.setProfilePhoto)), function ProfileController_setProfilePhoto(request, response, next) {
         const args = {
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
         };
@@ -609,7 +594,7 @@ function RegisterRoutes(app) {
         }
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/profile/photo', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController)), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController.prototype.deleteProfilePhoto)), function ProfileController_deleteProfilePhoto(request, response, next) {
+    app.delete('/api/v1/profile/deletePhoto', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController)), ...((0, runtime_1.fetchMiddlewares)(profile_controller_1.ProfileController.prototype.deleteProfilePhoto)), function ProfileController_deleteProfilePhoto(request, response, next) {
         const args = {
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
         };
@@ -703,7 +688,7 @@ function RegisterRoutes(app) {
         }
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/user/username', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(user_controller_1.UserController)), ...((0, runtime_1.fetchMiddlewares)(user_controller_1.UserController.prototype.setUsername)), function UserController_setUsername(request, response, next) {
+    app.post('/api/v1/user/setUsername', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(user_controller_1.UserController)), ...((0, runtime_1.fetchMiddlewares)(user_controller_1.UserController.prototype.setUsername)), function UserController_setUsername(request, response, next) {
         const args = {
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             params: { "in": "body", "name": "params", "required": true, "ref": "SetUsernameParams" },
@@ -721,7 +706,7 @@ function RegisterRoutes(app) {
         }
     });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/user', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(user_controller_1.UserController)), ...((0, runtime_1.fetchMiddlewares)(user_controller_1.UserController.prototype.deleteUser)), function UserController_deleteUser(request, response, next) {
+    app.delete('/api/v1/user/deleteUser', authenticateMiddleware([{ "jwt": [] }]), ...((0, runtime_1.fetchMiddlewares)(user_controller_1.UserController)), ...((0, runtime_1.fetchMiddlewares)(user_controller_1.UserController.prototype.deleteUser)), function UserController_deleteUser(request, response, next) {
         const args = {
             request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
         };

@@ -58,7 +58,7 @@ export class PostsController extends Controller {
   /*
    * Reacts to a post with a reaction specified by the body.
    */
-  @Post("/react/{postId}")
+  @Post("/react/like/{postId}")
   @OperationId("reactToPost")
   @Security("jwt")
   @Response(StatusCodes.CREATED)
@@ -78,7 +78,7 @@ export class PostsController extends Controller {
   /*
    * Deletes an existing reaction on a post.
    */
-  @Delete("/react/{postId}")
+  @Delete("/react/unlike/{postId}")
   @OperationId("unreactToPost")
   @Security("jwt")
   @Response(StatusCodes.OK)

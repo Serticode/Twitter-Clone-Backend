@@ -38,7 +38,7 @@ export class ProfileController extends Controller {
   //!
   //! SET / SAVE USER PROFILE DETAILS
   @Response(StatusCodes.OK)
-  @Post("info")
+  @Post("updateProfile")
   @OperationId("setProfile")
   @Security("jwt")
   public async setProfile(
@@ -52,7 +52,7 @@ export class ProfileController extends Controller {
 
   //!
   //! UPLOAD PROFILE PHOTO
-  @Post("photo")
+  @Post("uploadPhoto")
   @OperationId("setProfilePhoto")
   @Security("jwt")
   @Response(StatusCodes.OK)
@@ -95,7 +95,7 @@ export class ProfileController extends Controller {
 
   //!
   //! DELETE PROFILE
-  @Delete("photo")
+  @Delete("deletePhoto")
   @Security("jwt")
   @OperationId("deleteProfilePhoto")
   @Response(StatusCodes.OK)

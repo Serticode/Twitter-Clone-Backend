@@ -62,15 +62,6 @@ let AuthController = class AuthController extends tsoa_1.Controller {
             return new auth_service_1.default().refresh(requestBody, user);
         });
     }
-    // TODO: remove this dummy endpoint later when
-    // we have proper endpoints that use our
-    // authentication mechanism
-    dummy() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.setStatus(http_status_codes_1.StatusCodes.OK);
-            return Promise.resolve();
-        });
-    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -95,7 +86,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
-    (0, tsoa_1.Delete)(),
+    (0, tsoa_1.Delete)("logout"),
     (0, tsoa_1.Security)("jwt"),
     (0, tsoa_1.OperationId)("logoutUser"),
     __param(0, (0, tsoa_1.Request)()),
@@ -113,14 +104,6 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "refresh", null);
-__decorate([
-    (0, tsoa_1.Post)("dummy"),
-    (0, tsoa_1.OperationId)("dummy"),
-    (0, tsoa_1.Security)("jwt"),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "dummy", null);
 exports.AuthController = AuthController = __decorate([
     (0, tsoa_1.Route)("/api/v1/auth")
     //! ENFORCING A ROUTE TAG

@@ -58,7 +58,7 @@ let UserController = class UserController extends tsoa_1.Controller {
 };
 exports.UserController = UserController;
 __decorate([
-    (0, tsoa_1.Post)("/username"),
+    (0, tsoa_1.Post)("/setUsername"),
     (0, tsoa_1.OperationId)("setUsername"),
     (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK),
     (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.BAD_REQUEST, "Bad Request"),
@@ -70,7 +70,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "setUsername", null);
 __decorate([
-    (0, tsoa_1.Delete)(""),
+    (0, tsoa_1.Delete)("deleteUser"),
     (0, tsoa_1.OperationId)("deleteUser"),
     (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK),
     (0, tsoa_1.Security)("jwt"),

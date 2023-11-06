@@ -29,7 +29,7 @@ export class UserController extends Controller {
   /**
    * Set the username of the authenticated user.
    */
-  @Post("/username")
+  @Post("/setUsername")
   @OperationId("setUsername")
   @Response(StatusCodes.OK)
   @Response(StatusCodes.BAD_REQUEST, "Bad Request")
@@ -49,7 +49,7 @@ export class UserController extends Controller {
   /**
    * deletes a user and all their data.
    */
-  @Delete("")
+  @Delete("deleteUser")
   @OperationId("deleteUser")
   @Response(StatusCodes.OK)
   @Security("jwt")

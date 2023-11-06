@@ -48,7 +48,7 @@ export class FollowController extends Controller {
   /**
    * Deletes a follow relationship between two users.
    */
-  @Delete("/{userId}")
+  @Delete("/unfollow/{userId}")
   @OperationId("unfollowUser")
   @Security("jwt")
   @Response(StatusCodes.OK)

@@ -103,7 +103,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], FollowController.prototype, "followUser", null);
 __decorate([
-    (0, tsoa_1.Delete)("/{userId}"),
+    (0, tsoa_1.Delete)("/unfollow/{userId}"),
     (0, tsoa_1.OperationId)("unfollowUser"),
     (0, tsoa_1.Security)("jwt"),
     (0, tsoa_1.Response)(http_status_codes_1.StatusCodes.OK),
