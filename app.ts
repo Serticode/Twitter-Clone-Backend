@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
-import express, { json, urlencoded } from "src/node_modules/@types/express";
-import fileUpload from "src/node_modules/@types/express-fileupload";
+import express, { json, urlencoded } from "express";
+import fileUpload from "express-fileupload";
 import * as swaggerUI from "swagger-ui-express";
 import { connectToDatabase } from "./database/db_connect";
 import { errorHandlerMiddleware } from "./middleware/error_handler";
