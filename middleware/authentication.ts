@@ -28,7 +28,7 @@ export async function expressAuthentication(
     }
   } else if (securityName == "jwt_without_verification") {
     try {
-      return await jwtAuth(token, true);
+      return await jwtAuth(token, false);
     } catch {
       throw new UnauthorizedError();
     }

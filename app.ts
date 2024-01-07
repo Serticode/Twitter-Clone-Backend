@@ -5,6 +5,7 @@ import * as swaggerUI from "swagger-ui-express";
 import { connectToDatabase } from "./database/db_connect";
 import { errorHandlerMiddleware } from "./middleware/error_handler";
 import { RegisterRoutes } from "./routes/routes";
+import { populateTopicsCollection } from "./services/topics/topics_service";
 import * as swaggerJson from "./tsoa/tsoa.json";
 
 //! DOT ENV
@@ -47,16 +48,22 @@ app.use(errorHandlerMiddleware);
 const port = process.env.PORT || process.env.BACKUP_PORT;
 
 const start = async () => {
-  2;
   try {
     const mongoUri = process.env.MONGO_URI;
     if (!mongoUri) {
       throw new Error("MONGO_URI is missing in .env file");
     }
+
     console.log("Connecting to database...");
+
     await connectToDatabase(mongoUri);
+
     console.log("Connected to database");
+
+    await populateTopicsCollection();
+
     console.log("Starting server...");
+
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });

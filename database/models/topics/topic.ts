@@ -1,47 +1,37 @@
-import { model, Schema, Types } from "mongoose";
+import { Document, Schema, model } from "mongoose";
 
-const TopicSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    posts: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Post",
-      },
-    ],
+export enum TopicEnums {
+  Technology = "Technology 🖥️",
+  Science = "Science 🥼",
+  Art = "Art 🎨",
+  History = "History 🏺",
+  Animation = "Animation 💫",
+  Astrology = "Astrology 👩🏽‍🚀",
+  Books = "Books 📚",
+  Writing = "Writing ✍🏽",
+}
+
+const TopicSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
   },
-  { timestamps: true }
-);
+  posts: [],
+});
 
 TopicSchema.methods.toJSON = function () {
   return {
     id: this._id,
-    userId: this.userId,
-    postId: this.postId,
     name: this.name,
-    description: this.description,
-    type: this.type,
     posts: this.posts,
   };
 };
 
-interface TopicDocument extends Document {
-  userId: Types.ObjectId;
-  postId: Types.ObjectId;
-  reaction: ReactionType;
+export interface TopicDocument extends Document {
+  name: string;
+  posts: [];
   toJSON: () => any;
 }
 
-enum ReactionType {
-  like = "like",
-}
-
-export default model<TopicDocument>("Topic", TopicSchema);
+export default model<TopicDocument>("Topics", TopicSchema);
