@@ -453,6 +453,13 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"FlattenMaps_T_": {
+				"properties": {},
+				"type": "object"
+			},
+			"TopicDocument": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
 			"SetUsernameResponse": {
 				"properties": {
 					"user": {
@@ -1460,6 +1467,39 @@
 						}
 					}
 				]
+			}
+		},
+		"/api/v1/topic/topics": {
+			"get": {
+				"operationId": "getTopics",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/TopicDocument"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				},
+				"description": "Retrieves posts with given parameters, with pagination.",
+				"tags": [
+					"Topics"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
 			}
 		},
 		"/api/v1/user/setUsername": {

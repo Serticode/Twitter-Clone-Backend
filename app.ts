@@ -3,9 +3,9 @@ import express, { json, urlencoded } from "express";
 import fileUpload from "express-fileupload";
 import * as swaggerUI from "swagger-ui-express";
 import { connectToDatabase } from "./database/db_connect";
+import { populateTopicsCollection } from "./database/populate_topics";
 import { errorHandlerMiddleware } from "./middleware/error_handler";
 import { RegisterRoutes } from "./routes/routes";
-import { populateTopicsCollection } from "./services/topics/topics_service";
 import * as swaggerJson from "./tsoa/tsoa.json";
 
 //! DOT ENV
