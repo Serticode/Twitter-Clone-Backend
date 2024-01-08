@@ -118,7 +118,7 @@ export class PostsController extends Controller {
   //!
   //!
   /**
-   * Grabs an attachment from a post
+   ** Grabs an attachment from a post
    */
   @Response(StatusCodes.OK)
   @Response(StatusCodes.NOT_FOUND, "Photo not found")
@@ -145,7 +145,7 @@ export class PostsController extends Controller {
   //!
   //!
   /**
-   * Deletes a post belonging to the current user.
+   ** Deletes a post belonging to the current user.
    */
   @Delete("/{postId}")
   @OperationId("deletePost")

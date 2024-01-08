@@ -7,13 +7,13 @@ import { AuthController } from './../controllers/auth/auth_controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { FollowController } from './../controllers/follow/follow_controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { InterestsController } from './../controllers/interests/interests_controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PostsController } from './../controllers/posts/post_controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ProfileController } from './../controllers/profile/profile_controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { QueriesController } from './../controllers/query/query_controller';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { TopicsController } from './../controllers/topics/topics_controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './../controllers/user/user_controller';
 import { expressAuthentication } from './../middleware/authentication';
@@ -95,6 +95,34 @@ const models: TsoaRoute.Models = {
             "remainingPages": {"dataType":"double","required":true},
             "count": {"dataType":"double","required":true},
             "follows": {"dataType":"array","array":{"dataType":"refObject","ref":"Follow"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "FlattenMaps_T_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "InterestDocument": {
+        "dataType": "refAlias",
+        "type": {"ref":"FlattenMaps_T_","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserAndInterests": {
+        "dataType": "refObject",
+        "properties": {
+            "user": {"ref":"User","required":true},
+            "interests": {"dataType":"array","array":{"dataType":"refAlias","ref":"InterestDocument"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserInterestsCreationParams": {
+        "dataType": "refObject",
+        "properties": {
+            "userID": {"dataType":"string","required":true},
+            "interests": {"dataType":"array","array":{"dataType":"refAlias","ref":"InterestDocument"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -226,16 +254,6 @@ const models: TsoaRoute.Models = {
             "repostCount": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "FlattenMaps_T_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "TopicDocument": {
-        "dataType": "refAlias",
-        "type": {"ref":"FlattenMaps_T_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "SetUsernameResponse": {
@@ -484,6 +502,58 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.getUserFollowers.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/interests/getInterests',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(InterestsController)),
+            ...(fetchMiddlewares<RequestHandler>(InterestsController.prototype.getTopics)),
+
+            function InterestsController_getTopics(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new InterestsController();
+
+
+              const promise = controller.getTopics.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/interests/setInterests',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(InterestsController)),
+            ...(fetchMiddlewares<RequestHandler>(InterestsController.prototype.setInterests)),
+
+            function InterestsController_setInterests(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+                    body: {"in":"body","name":"body","required":true,"ref":"UserInterestsCreationParams"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new InterestsController();
+
+
+              const promise = controller.setInterests.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
@@ -892,31 +962,6 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.getPostStats.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/v1/topic/topics',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<RequestHandler>(TopicsController)),
-            ...(fetchMiddlewares<RequestHandler>(TopicsController.prototype.getTopics)),
-
-            function TopicsController_getTopics(request: any, response: any, next: any) {
-            const args = {
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new TopicsController();
-
-
-              const promise = controller.getTopics.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

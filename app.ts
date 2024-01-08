@@ -3,7 +3,7 @@ import express, { json, urlencoded } from "express";
 import fileUpload from "express-fileupload";
 import * as swaggerUI from "swagger-ui-express";
 import { connectToDatabase } from "./database/db_connect";
-import { populateTopicsCollection } from "./database/populate_topics";
+import { populateInterestsCollection } from "./database/populate_interests";
 import { errorHandlerMiddleware } from "./middleware/error_handler";
 import { RegisterRoutes } from "./routes/routes";
 import * as swaggerJson from "./tsoa/tsoa.json";
@@ -60,7 +60,7 @@ const start = async () => {
 
     console.log("Connected to database");
 
-    await populateTopicsCollection();
+    await populateInterestsCollection();
 
     console.log("Starting server...");
 
