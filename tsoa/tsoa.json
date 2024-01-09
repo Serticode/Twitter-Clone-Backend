@@ -198,6 +198,18 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"Interest": {
+				"properties": {
+					"interestName": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"interestName"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"UserInterestsCreationParams": {
 				"properties": {
 					"userID": {
@@ -205,7 +217,7 @@
 					},
 					"interests": {
 						"items": {
-							"$ref": "#/components/schemas/InterestDocument"
+							"$ref": "#/components/schemas/Interest"
 						},
 						"type": "array"
 					}
@@ -938,6 +950,9 @@
 					},
 					"401": {
 						"description": "Unauthorized"
+					},
+					"500": {
+						"description": "Kindly check your request body"
 					}
 				},
 				"tags": [

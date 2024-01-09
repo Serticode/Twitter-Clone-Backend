@@ -23,20 +23,18 @@ export default class InterestsService {
     }
   }
 
-  //!
-  //!
   public async setUserInterests(
     userId: string,
     params: UserInterestsCreationParams
   ) {
-    console.log("USER ID AND INTEREST PARAMS: ", userId, params);
-
     const updatedInterests: InterestDocument[] = [];
 
     //! LOOP THROUGH ALL INTERESTS SELECTED BY THE USER
     for (const interest of params.interests) {
       //! FIND THE INTEREST IN THE DB
-      const existingInterest = await Interests.findOne({ name: interest.name });
+      const existingInterest = await Interests.findOne({
+        name: interest.interestName,
+      });
 
       if (existingInterest) {
         //! ADD THE USERS ID TO THE INTEREST'S USER ARRAY
@@ -50,7 +48,7 @@ export default class InterestsService {
       } else {
         //! IF THE INTEREST DOESN'T EXIST, CREATE A NEW ONE
         const newInterest = new Interests({
-          name: interest.name,
+          name: interest.interestName,
           posts: [],
           users: [userId],
         });

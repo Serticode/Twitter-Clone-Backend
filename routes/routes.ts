@@ -118,11 +118,19 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Interest": {
+        "dataType": "refObject",
+        "properties": {
+            "interestName": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UserInterestsCreationParams": {
         "dataType": "refObject",
         "properties": {
             "userID": {"dataType":"string","required":true},
-            "interests": {"dataType":"array","array":{"dataType":"refAlias","ref":"InterestDocument"},"required":true},
+            "interests": {"dataType":"array","array":{"dataType":"refObject","ref":"Interest"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -511,9 +519,9 @@ export function RegisterRoutes(app: Router) {
         app.get('/api/v1/interests/getInterests',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InterestsController)),
-            ...(fetchMiddlewares<RequestHandler>(InterestsController.prototype.getTopics)),
+            ...(fetchMiddlewares<RequestHandler>(InterestsController.prototype.getInterests)),
 
-            function InterestsController_getTopics(request: any, response: any, next: any) {
+            function InterestsController_getInterests(request: any, response: any, next: any) {
             const args = {
             };
 
@@ -526,7 +534,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new InterestsController();
 
 
-              const promise = controller.getTopics.apply(controller, validatedArgs as any);
+              const promise = controller.getInterests.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

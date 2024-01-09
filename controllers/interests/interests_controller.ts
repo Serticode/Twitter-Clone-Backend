@@ -30,8 +30,7 @@ export class InterestsController extends Controller {
   @Response(StatusCodes.OK)
   @Response(StatusCodes.UNAUTHORIZED, "Unauthorized")
   @Security("jwt")
-  public async getTopics(): Promise<InterestDocument[]> {
-    console.log("GET TOPICS CALLED: ");
+  public async getInterests(): Promise<InterestDocument[]> {
     return await new TopicsService().getInterests();
   }
 
@@ -43,11 +42,11 @@ export class InterestsController extends Controller {
   @Response(StatusCodes.OK)
   @Response(StatusCodes.UNAUTHORIZED, "Unauthorized")
   @Response(StatusCodes.BAD_REQUEST, "Wrong params passed")
+  @Response(StatusCodes.INTERNAL_SERVER_ERROR, "Kindly check your request body")
   public async setInterests(
     @Request() request: ExpressRequest,
     @Body() body: UserInterestsCreationParams
   ): Promise<UserAndInterests> {
-    console.log("BODY: ", body);
     const user = request.user as AuthenticatedUser;
     return await new TopicsService().setUserInterests(user.id, body);
   }
