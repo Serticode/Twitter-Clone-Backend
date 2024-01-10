@@ -41,8 +41,10 @@ export class InterestsController extends Controller {
   @Security("jwt")
   @Response(StatusCodes.OK)
   @Response(StatusCodes.UNAUTHORIZED, "Unauthorized")
-  @Response(StatusCodes.BAD_REQUEST, "Wrong params passed")
-  @Response(StatusCodes.INTERNAL_SERVER_ERROR, "Kindly check your request body")
+  @Response(
+    StatusCodes.BAD_REQUEST,
+    "Bad request. Kindly check your header and body params"
+  )
   public async setInterests(
     @Request() request: ExpressRequest,
     @Body() body: UserInterestsCreationParams

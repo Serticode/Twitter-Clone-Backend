@@ -45,13 +45,12 @@ PostSchema.methods.toJSON = function (): any {
   };
 };
 
-interface PostDocument extends Document {
+export interface PostDocument extends Document {
   userId: Types.ObjectId;
   text?: string;
   type: PostType;
   originalPostId?: Types.ObjectId;
   attachmentId?: Types.ObjectId;
-  toJSON: () => any;
 }
 
 enum PostType {

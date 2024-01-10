@@ -106,6 +106,120 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"PostType": {
+				"enum": [
+					"post",
+					"repost",
+					"reply"
+				],
+				"type": "string"
+			},
+			"Post": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "string"
+					},
+					"text": {
+						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/PostType"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"attachmentId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"userId",
+					"text",
+					"type",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetBookmarksResult": {
+				"properties": {
+					"bookmarks": {
+						"items": {
+							"$ref": "#/components/schemas/Post"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"bookmarks"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"FlattenMaps_T_": {
+				"properties": {},
+				"type": "object"
+			},
+			"PostDocument": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"AddToBookmarkResult": {
+				"properties": {
+					"user": {
+						"$ref": "#/components/schemas/User"
+					},
+					"bookmarks": {
+						"items": {
+							"$ref": "#/components/schemas/PostDocument"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"user",
+					"bookmarks"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserPostToBookmark": {
+				"properties": {
+					"postID": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"postID"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserBookmarksCreationParams": {
+				"properties": {
+					"userID": {
+						"type": "string"
+					},
+					"postToBookmark": {
+						"$ref": "#/components/schemas/UserPostToBookmark"
+					}
+				},
+				"required": [
+					"userID",
+					"postToBookmark"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Follow": {
 				"properties": {
 					"id": {
@@ -172,10 +286,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"FlattenMaps_T_": {
-				"properties": {},
-				"type": "object"
-			},
 			"InterestDocument": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
@@ -228,14 +338,6 @@
 				],
 				"type": "object",
 				"additionalProperties": false
-			},
-			"PostType": {
-				"enum": [
-					"post",
-					"repost",
-					"reply"
-				],
-				"type": "string"
 			},
 			"PostModel": {
 				"properties": {
@@ -363,43 +465,6 @@
 						"type": "string"
 					}
 				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Post": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"userId": {
-						"type": "string"
-					},
-					"text": {
-						"type": "string"
-					},
-					"type": {
-						"$ref": "#/components/schemas/PostType"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"updatedAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"attachmentId": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"id",
-					"userId",
-					"text",
-					"type",
-					"createdAt",
-					"updatedAt"
-				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -713,6 +778,100 @@
 				}
 			}
 		},
+		"/api/v1/bookmarks/getBookmarks/{userID}": {
+			"get": {
+				"operationId": "getBookmarks",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/GetBookmarksResult"
+										},
+										{
+											"type": "string"
+										}
+									]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				},
+				"tags": [
+					"Bookmarks"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/bookmarks/setBookmarks": {
+			"post": {
+				"operationId": "setBookmark",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/AddToBookmarkResult"
+										},
+										{
+											"type": "string"
+										}
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request. Kindly check your header and body params"
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				},
+				"tags": [
+					"Bookmarks"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserBookmarksCreationParams"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/api/v1/follow/{userId}": {
 			"post": {
 				"operationId": "followUser",
@@ -946,13 +1105,10 @@
 						}
 					},
 					"400": {
-						"description": "Wrong params passed"
+						"description": "Bad request. Kindly check your header and body params"
 					},
 					"401": {
 						"description": "Unauthorized"
-					},
-					"500": {
-						"description": "Kindly check your request body"
 					}
 				},
 				"tags": [
