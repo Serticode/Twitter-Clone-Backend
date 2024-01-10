@@ -4,8 +4,10 @@ import { User } from "../../services/models/auth_models";
 import {
   AddToBookmarkResult,
   GetBookmarksResult,
+  UerBookmarksDeleteParams,
   UserBookmarksCreationParams,
 } from "../../services/models/bookmark_models";
+import { DeleteBookmarkResult } from "../models/bookmark_models";
 
 //!
 //!
@@ -36,7 +38,16 @@ export default class BookmarksService {
         if (!Array.isArray(bookmarks.posts)) {
           bookmarks.posts = [];
         }
-        bookmarks.posts.push(post);
+
+        const postExists = bookmarks.posts.some(
+          (bookmarkPost: any) => bookmarkPost._id.toString() === postID
+        );
+
+        if (!postExists) {
+          bookmarks.posts.push(post);
+        } else {
+          return "Post already bookmarked";
+        }
       }
 
       const savedBookmarks = await bookmarks.save();
@@ -65,6 +76,41 @@ export default class BookmarksService {
     } catch (error) {
       console.error("Error getting bookmarks:", error);
       return "Could not fetch bookmarks";
+    }
+  }
+
+  //!
+  //! DELETE USER BOOKMARK
+  async deletePostFromBookmarks(
+    params: UerBookmarksDeleteParams
+  ): Promise<DeleteBookmarkResult> {
+    try {
+      const { userID, postToDelete } = params;
+      const { postID } = postToDelete;
+
+      const userBookmarks = await BookmarksModel.findOne({ userID });
+
+      if (!userBookmarks || !Array.isArray(userBookmarks.posts)) {
+        return "Post has already been deleted or user's bookmarks not found" as unknown as DeleteBookmarkResult;
+      }
+
+      const foundPost = userBookmarks.posts.find(
+        (post: PostDocument) => post._id?.toString() === postID
+      );
+
+      if (!foundPost) {
+        return "Cannot find post in your bookmarks" as unknown as DeleteBookmarkResult;
+      }
+
+      userBookmarks.posts.splice(userBookmarks.posts.indexOf(foundPost), 1); // Remove the found post from the array
+
+      userBookmarks.markModified("posts");
+      await userBookmarks.save();
+
+      return "Post deleted successfully from user's bookmarks" as unknown as DeleteBookmarkResult;
+    } catch (error) {
+      console.error("Error deleting post from bookmarks:", error);
+      return "Failed to delete post from user's bookmarks" as unknown as DeleteBookmarkResult;
     }
   }
 }

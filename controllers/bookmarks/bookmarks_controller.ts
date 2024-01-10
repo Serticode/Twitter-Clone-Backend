@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import {
   Body,
   Controller,
+  Delete,
   Get,
   OperationId,
   Path,
@@ -14,7 +15,9 @@ import {
 import BookmarksService from "../../services/bookmarks/bookmark_service";
 import {
   AddToBookmarkResult,
+  DeleteBookmarkResult,
   GetBookmarksResult,
+  UerBookmarksDeleteParams,
   UserBookmarksCreationParams,
 } from "../../services/models/bookmark_models";
 
@@ -49,5 +52,22 @@ export class BookmarksController extends Controller {
     @Body() body: UserBookmarksCreationParams
   ): Promise<AddToBookmarkResult | string> {
     return await new BookmarksService().addToBookmarks(body);
+  }
+
+  //!
+  //!
+  @Delete("/deleteBookmarks")
+  @OperationId("deleteBookmarks")
+  @Security("jwt")
+  @Response(StatusCodes.OK)
+  @Response(StatusCodes.UNAUTHORIZED, "Unauthorized")
+  @Response(
+    StatusCodes.BAD_REQUEST,
+    "Bad request. Kindly check your header and body params"
+  )
+  public async deleteBookmark(
+    @Body() body: UerBookmarksDeleteParams
+  ): Promise<DeleteBookmarkResult> {
+    return await new BookmarksService().deletePostFromBookmarks(body);
   }
 }

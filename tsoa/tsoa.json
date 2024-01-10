@@ -114,12 +114,9 @@
 				],
 				"type": "string"
 			},
-			"Post": {
+			"PostForGetBookmarkResult": {
 				"properties": {
 					"id": {
-						"type": "string"
-					},
-					"userId": {
 						"type": "string"
 					},
 					"text": {
@@ -142,7 +139,6 @@
 				},
 				"required": [
 					"id",
-					"userId",
 					"text",
 					"type",
 					"createdAt",
@@ -155,7 +151,7 @@
 				"properties": {
 					"bookmarks": {
 						"items": {
-							"$ref": "#/components/schemas/Post"
+							"$ref": "#/components/schemas/PostForGetBookmarkResult"
 						},
 						"type": "array"
 					}
@@ -216,6 +212,34 @@
 				"required": [
 					"userID",
 					"postToBookmark"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DeleteBookmarkResult": {
+				"properties": {
+					"result": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"result"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UerBookmarksDeleteParams": {
+				"properties": {
+					"userID": {
+						"type": "string"
+					},
+					"postToDelete": {
+						"$ref": "#/components/schemas/UserPostToBookmark"
+					}
+				},
+				"required": [
+					"userID",
+					"postToDelete"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -465,6 +489,43 @@
 						"type": "string"
 					}
 				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Post": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "string"
+					},
+					"text": {
+						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/PostType"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"attachmentId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"userId",
+					"text",
+					"type",
+					"createdAt",
+					"updatedAt"
+				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -866,6 +927,48 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/UserBookmarksCreationParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/bookmarks/deleteBookmarks": {
+			"delete": {
+				"operationId": "deleteBookmarks",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DeleteBookmarkResult"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request. Kindly check your header and body params"
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				},
+				"tags": [
+					"Bookmarks"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UerBookmarksDeleteParams"
 							}
 						}
 					}

@@ -1,6 +1,6 @@
 import { PostDocument } from "../../database/models/posts/posts";
 import { User } from "./auth_models";
-import { Post } from "./post_model";
+import { PostForGetBookmarkResult } from "./post_model";
 
 export interface UserBookmarkToFetch {
   userID: string;
@@ -14,11 +14,20 @@ export interface UserBookmarksCreationParams {
   postToBookmark: UserPostToBookmark;
 }
 
+export interface UerBookmarksDeleteParams {
+  userID: string;
+  postToDelete: UserPostToBookmark;
+}
+
 export interface AddToBookmarkResult {
   user: User;
   bookmarks: PostDocument[];
 }
 
 export interface GetBookmarksResult {
-  bookmarks: Post[];
+  bookmarks: PostForGetBookmarkResult[];
+}
+
+export interface DeleteBookmarkResult {
+  result: string;
 }

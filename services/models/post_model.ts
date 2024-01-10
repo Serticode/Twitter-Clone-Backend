@@ -14,6 +14,15 @@ export interface Post {
   attachmentId?: string;
 }
 
+export interface PostForGetBookmarkResult {
+  id: string;
+  text: string;
+  type: PostType;
+  createdAt: Date;
+  updatedAt: Date;
+  attachmentId?: string;
+}
+
 export enum PostType {
   post = "post",
   repost = "repost",
