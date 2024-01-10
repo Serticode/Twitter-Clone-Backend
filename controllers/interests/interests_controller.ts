@@ -12,7 +12,7 @@ import {
   Security,
   Tags,
 } from "tsoa";
-import { InterestDocument } from "../../database/models/interests/interests";
+import { InterestDocument } from "../../database/models/follow/interests/interests";
 import AuthenticatedUser from "../../middleware/models/authenticated_user";
 import TopicsService from "../../services/interests/interests_service";
 import {

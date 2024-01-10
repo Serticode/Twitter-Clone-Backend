@@ -17,7 +17,10 @@ import {
   AddToBookmarkResult,
   DeleteBookmarkResult,
   GetBookmarksResult,
+  SearchBookmarkParams,
   UerBookmarksDeleteParams,
+  UserBookmarkQueryFailedResult,
+  UserBookmarkQueryResult,
   UserBookmarksCreationParams,
 } from "../../services/models/bookmark_models";
 
@@ -52,6 +55,25 @@ export class BookmarksController extends Controller {
     @Body() body: UserBookmarksCreationParams
   ): Promise<AddToBookmarkResult | string> {
     return await new BookmarksService().addToBookmarks(body);
+  }
+
+  //!
+  //!
+  @Get("/searchBookmarks/{userID}/{searchQuery}")
+  @OperationId("searchBookmarks")
+  @Security("jwt")
+  @Response(StatusCodes.OK)
+  @Response(StatusCodes.UNAUTHORIZED, "Unauthorized")
+  @Response(
+    StatusCodes.BAD_REQUEST,
+    "Bad request. Kindly check your header and body params"
+  )
+  public async searchBookmarks(
+    @Path() userID: string,
+    @Path() searchQuery: string
+  ): Promise<UserBookmarkQueryResult | UserBookmarkQueryFailedResult> {
+    const body = { userID, searchQuery } as SearchBookmarkParams;
+    return await new BookmarksService().searchBookmarks(body);
   }
 
   //!

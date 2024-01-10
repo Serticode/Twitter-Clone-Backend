@@ -1,6 +1,6 @@
 import Interests, {
   InterestDocument,
-} from "../../database/models/interests/interests";
+} from "../../database/models/follow/interests/interests";
 import User from "../../database/models/user/user_model";
 import {
   UserAndInterests,

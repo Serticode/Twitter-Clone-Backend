@@ -1,5 +1,5 @@
 import { Document, Schema, model } from "mongoose";
-import { Post } from "../../../services/models/post_model";
+import { Post } from "../../../../services/models/post_model";
 
 export enum InterestEnums {
   Technology = "Technology 🖥️",

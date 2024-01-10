@@ -4,7 +4,10 @@ import { User } from "../../services/models/auth_models";
 import {
   AddToBookmarkResult,
   GetBookmarksResult,
+  SearchBookmarkParams,
   UerBookmarksDeleteParams,
+  UserBookmarkQueryFailedResult,
+  UserBookmarkQueryResult,
   UserBookmarksCreationParams,
 } from "../../services/models/bookmark_models";
 import { DeleteBookmarkResult } from "../models/bookmark_models";
@@ -81,7 +84,7 @@ export default class BookmarksService {
 
   //!
   //! DELETE USER BOOKMARK
-  async deletePostFromBookmarks(
+  public async deletePostFromBookmarks(
     params: UerBookmarksDeleteParams
   ): Promise<DeleteBookmarkResult> {
     try {
@@ -91,7 +94,9 @@ export default class BookmarksService {
       const userBookmarks = await BookmarksModel.findOne({ userID });
 
       if (!userBookmarks || !Array.isArray(userBookmarks.posts)) {
-        return "Post has already been deleted or user's bookmarks not found" as unknown as DeleteBookmarkResult;
+        return {
+          result: "Post has already been deleted or user's bookmarks not found",
+        };
       }
 
       const foundPost = userBookmarks.posts.find(
@@ -99,18 +104,54 @@ export default class BookmarksService {
       );
 
       if (!foundPost) {
-        return "Cannot find post in your bookmarks" as unknown as DeleteBookmarkResult;
+        return { result: "Cannot find post in your bookmarks" };
       }
 
-      userBookmarks.posts.splice(userBookmarks.posts.indexOf(foundPost), 1); // Remove the found post from the array
+      userBookmarks.posts.splice(userBookmarks.posts.indexOf(foundPost), 1);
 
       userBookmarks.markModified("posts");
       await userBookmarks.save();
 
-      return "Post deleted successfully from user's bookmarks" as unknown as DeleteBookmarkResult;
+      return { result: "Post deleted successfully from user's bookmarks" };
     } catch (error) {
       console.error("Error deleting post from bookmarks:", error);
-      return "Failed to delete post from user's bookmarks" as unknown as DeleteBookmarkResult;
+      return { result: "Failed to delete post from user's bookmarks" };
+    }
+  }
+
+  //!
+  //!
+  public async searchBookmarks(
+    params: SearchBookmarkParams
+  ): Promise<UserBookmarkQueryResult | UserBookmarkQueryFailedResult> {
+    try {
+      const { userID, searchQuery } = params;
+
+      const userBookmarks = await BookmarksModel.findOne({ userID });
+
+      if (!userBookmarks || !Array.isArray(userBookmarks.posts)) {
+        return {
+          result: "We can't find any bookmarks with the word you've entered.",
+        };
+      }
+
+      const searchRegex = new RegExp(searchQuery, "i");
+      const matchedPosts: PostDocument[] = [];
+
+      for (const post of userBookmarks.posts) {
+        if (post.text && post.text.match(searchRegex)) {
+          matchedPosts.push(post);
+        }
+      }
+
+      return {
+        result: matchedPosts.length > 0 ? matchedPosts : [],
+      };
+    } catch (error) {
+      console.error("Error searching bookmarks:", error);
+      return {
+        result: "An error occurred, please try again.",
+      };
     }
   }
 }
