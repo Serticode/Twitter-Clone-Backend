@@ -15,13 +15,16 @@ import {
 import BookmarksService from "../../services/bookmarks/bookmark_service";
 import {
   AddToBookmarkResult,
+  ArchiveBookmarkCategoryParam,
+  ArchivedCategoryResult,
+  DeleteBookmarkCategoryParam,
   DeleteBookmarkResult,
   GetBookmarksResult,
   SearchBookmarkParams,
-  UerBookmarksDeleteParams,
   UserBookmarkQueryFailedResult,
   UserBookmarkQueryResult,
   UserBookmarksCreationParams,
+  UserBookmarksDeleteParams,
 } from "../../services/models/bookmark_models";
 
 @Route("/api/v1/bookmarks")
@@ -88,8 +91,42 @@ export class BookmarksController extends Controller {
     "Bad request. Kindly check your header and body params"
   )
   public async deleteBookmark(
-    @Body() body: UerBookmarksDeleteParams
+    @Body() body: UserBookmarksDeleteParams
   ): Promise<DeleteBookmarkResult> {
     return await new BookmarksService().deletePostFromBookmarks(body);
+  }
+
+  //!
+  //!
+  @Post("/archiveBookmarkCategory")
+  @OperationId("archiveBookmarkCategory")
+  @Security("jwt")
+  @Response(StatusCodes.OK)
+  @Response(StatusCodes.UNAUTHORIZED, "Unauthorized")
+  @Response(
+    StatusCodes.BAD_REQUEST,
+    "Bad request. Kindly check your header and body params"
+  )
+  public async archiveBookmarkCategory(
+    @Body() body: ArchiveBookmarkCategoryParam
+  ): Promise<ArchivedCategoryResult> {
+    return await new BookmarksService().archiveBookmarkCategory(body);
+  }
+
+  //!
+  //!
+  @Delete("/deleteBookmarkCategory")
+  @OperationId("deleteBookmarkCategory")
+  @Security("jwt")
+  @Response(StatusCodes.OK)
+  @Response(StatusCodes.UNAUTHORIZED, "Unauthorized")
+  @Response(
+    StatusCodes.BAD_REQUEST,
+    "Bad request. Kindly check your header and body params"
+  )
+  public async deleteBookmarkCategory(
+    @Body() body: DeleteBookmarkCategoryParam
+  ): Promise<DeleteBookmarkResult> {
+    return await new BookmarksService().deleteBookmarkCategory(body);
   }
 }

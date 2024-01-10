@@ -107,7 +107,7 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "PostDocument": {
+    "BookmarksDocument": {
         "dataType": "refAlias",
         "type": {"ref":"FlattenMaps_T_","validators":{}},
     },
@@ -116,7 +116,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "user": {"ref":"User","required":true},
-            "bookmarks": {"dataType":"array","array":{"dataType":"refAlias","ref":"PostDocument"},"required":true},
+            "bookmarks": {"dataType":"array","array":{"dataType":"refAlias","ref":"BookmarksDocument"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -133,9 +133,15 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "userID": {"dataType":"string","required":true},
+            "categoryName": {"dataType":"string","required":true},
             "postToBookmark": {"ref":"UserPostToBookmark","required":true},
         },
         "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "PostDocument": {
+        "dataType": "refAlias",
+        "type": {"ref":"FlattenMaps_T_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UserBookmarkQueryResult": {
@@ -162,11 +168,38 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "UerBookmarksDeleteParams": {
+    "UserBookmarksDeleteParams": {
         "dataType": "refObject",
         "properties": {
             "userID": {"dataType":"string","required":true},
+            "categoryName": {"dataType":"string","required":true},
             "postToDelete": {"ref":"UserPostToBookmark","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ArchivedCategoryResult": {
+        "dataType": "refObject",
+        "properties": {
+            "result": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ArchiveBookmarkCategoryParam": {
+        "dataType": "refObject",
+        "properties": {
+            "userID": {"dataType":"string","required":true},
+            "categoryName": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DeleteBookmarkCategoryParam": {
+        "dataType": "refObject",
+        "properties": {
+            "userID": {"dataType":"string","required":true},
+            "categoryName": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -579,7 +612,7 @@ export function RegisterRoutes(app: Router) {
 
             function BookmarksController_deleteBookmark(request: any, response: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"UerBookmarksDeleteParams"},
+                    body: {"in":"body","name":"body","required":true,"ref":"UserBookmarksDeleteParams"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -592,6 +625,58 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.deleteBookmark.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/bookmarks/archiveBookmarkCategory',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookmarksController)),
+            ...(fetchMiddlewares<RequestHandler>(BookmarksController.prototype.archiveBookmarkCategory)),
+
+            function BookmarksController_archiveBookmarkCategory(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"ArchiveBookmarkCategoryParam"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new BookmarksController();
+
+
+              const promise = controller.archiveBookmarkCategory.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/bookmarks/deleteBookmarkCategory',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(BookmarksController)),
+            ...(fetchMiddlewares<RequestHandler>(BookmarksController.prototype.deleteBookmarkCategory)),
+
+            function BookmarksController_deleteBookmarkCategory(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"DeleteBookmarkCategoryParam"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new BookmarksController();
+
+
+              const promise = controller.deleteBookmarkCategory.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

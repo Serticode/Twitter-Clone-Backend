@@ -166,7 +166,7 @@
 				"properties": {},
 				"type": "object"
 			},
-			"PostDocument": {
+			"BookmarksDocument": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
 			"AddToBookmarkResult": {
@@ -176,7 +176,7 @@
 					},
 					"bookmarks": {
 						"items": {
-							"$ref": "#/components/schemas/PostDocument"
+							"$ref": "#/components/schemas/BookmarksDocument"
 						},
 						"type": "array"
 					}
@@ -205,16 +205,23 @@
 					"userID": {
 						"type": "string"
 					},
+					"categoryName": {
+						"type": "string"
+					},
 					"postToBookmark": {
 						"$ref": "#/components/schemas/UserPostToBookmark"
 					}
 				},
 				"required": [
 					"userID",
+					"categoryName",
 					"postToBookmark"
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"PostDocument": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
 			"UserBookmarkQueryResult": {
 				"properties": {
@@ -255,9 +262,12 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"UerBookmarksDeleteParams": {
+			"UserBookmarksDeleteParams": {
 				"properties": {
 					"userID": {
+						"type": "string"
+					},
+					"categoryName": {
 						"type": "string"
 					},
 					"postToDelete": {
@@ -266,7 +276,52 @@
 				},
 				"required": [
 					"userID",
+					"categoryName",
 					"postToDelete"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ArchivedCategoryResult": {
+				"properties": {
+					"result": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"result"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ArchiveBookmarkCategoryParam": {
+				"properties": {
+					"userID": {
+						"type": "string"
+					},
+					"categoryName": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userID",
+					"categoryName"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DeleteBookmarkCategoryParam": {
+				"properties": {
+					"userID": {
+						"type": "string"
+					},
+					"categoryName": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userID",
+					"categoryName"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1051,7 +1106,91 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/UerBookmarksDeleteParams"
+								"$ref": "#/components/schemas/UserBookmarksDeleteParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/bookmarks/archiveBookmarkCategory": {
+			"post": {
+				"operationId": "archiveBookmarkCategory",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ArchivedCategoryResult"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request. Kindly check your header and body params"
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				},
+				"tags": [
+					"Bookmarks"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ArchiveBookmarkCategoryParam"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/bookmarks/deleteBookmarkCategory": {
+			"delete": {
+				"operationId": "deleteBookmarkCategory",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DeleteBookmarkResult"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request. Kindly check your header and body params"
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				},
+				"tags": [
+					"Bookmarks"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DeleteBookmarkCategoryParam"
 							}
 						}
 					}
