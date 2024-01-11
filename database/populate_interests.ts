@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import InterestsModel, {
   InterestDocument,
   InterestEnums,
-} from "./models/follow/interests/interests";
+} from "./models/interests/interests";
 
 export const populateInterestsCollection = async (): Promise<void> => {
   try {

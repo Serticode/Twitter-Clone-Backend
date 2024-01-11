@@ -445,6 +445,34 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"UserMutedWordsResult": {
+				"properties": {
+					"result": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"result"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserMutedWordParams": {
+				"properties": {
+					"userID": {
+						"type": "string"
+					},
+					"mutedWord": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userID",
+					"mutedWord"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"PostModel": {
 				"properties": {
 					"id": {
@@ -1451,6 +1479,48 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/UserInterestsCreationParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/mutedWords/mutedWords": {
+			"post": {
+				"operationId": "mutedWords",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserMutedWordsResult"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request. Kindly check your header and body params"
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				},
+				"tags": [
+					"Mute"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserMutedWordParams"
 							}
 						}
 					}

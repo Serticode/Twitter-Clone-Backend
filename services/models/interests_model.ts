@@ -1,4 +1,4 @@
-import { InterestDocument } from "../../database/models/follow/interests/interests";
+import { InterestDocument } from "../../database/models/interests/interests";
 import { User } from "./auth_models";
 
 export interface Interest {

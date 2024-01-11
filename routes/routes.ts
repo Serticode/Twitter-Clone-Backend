@@ -11,6 +11,8 @@ import { FollowController } from './../controllers/follow/follow_controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { InterestsController } from './../controllers/interests/interests_controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { MutedWordsController } from './../controllers/mute/muted_words_controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PostsController } from './../controllers/posts/post_controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ProfileController } from './../controllers/profile/profile_controller';
@@ -256,6 +258,23 @@ const models: TsoaRoute.Models = {
         "properties": {
             "userID": {"dataType":"string","required":true},
             "interests": {"dataType":"array","array":{"dataType":"refObject","ref":"Interest"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserMutedWordsResult": {
+        "dataType": "refObject",
+        "properties": {
+            "result": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserMutedWordParams": {
+        "dataType": "refObject",
+        "properties": {
+            "userID": {"dataType":"string","required":true},
+            "mutedWord": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -839,6 +858,32 @@ export function RegisterRoutes(app: Router) {
 
 
               const promise = controller.setInterests.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/mutedWords/mutedWords',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(MutedWordsController)),
+            ...(fetchMiddlewares<RequestHandler>(MutedWordsController.prototype.setMutedWord)),
+
+            function MutedWordsController_setMutedWord(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"UserMutedWordParams"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new MutedWordsController();
+
+
+              const promise = controller.setMutedWord.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
