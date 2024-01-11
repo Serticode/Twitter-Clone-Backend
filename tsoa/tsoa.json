@@ -106,6 +106,34 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"BlockAccountResult": {
+				"properties": {
+					"result": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"result"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"BlockAccountParams": {
+				"properties": {
+					"userID": {
+						"type": "string"
+					},
+					"blockedAccountID": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userID",
+					"blockedAccountID"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"PostType": {
 				"enum": [
 					"post",
@@ -943,6 +971,48 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/RefreshParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/blockAccount/blockAccount": {
+			"post": {
+				"operationId": "blockAccount",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BlockAccountResult"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request. Kindly check your header and body params"
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				},
+				"tags": [
+					"Block account"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/BlockAccountParams"
 							}
 						}
 					}

@@ -2,20 +2,20 @@ import { Document, Schema, model } from "mongoose";
 
 //!
 //!
-const MutedWordsSchema = new Schema({
+const BlockedAccountSchema = new Schema({
   userID: {
     type: String,
     required: true,
     unique: true,
   },
-  mutedWords: [
+  blockedAccounts: [
     {
       type: String,
     },
   ],
 });
 
-MutedWordsSchema.set("toJSON", {
+BlockedAccountSchema.set("toJSON", {
   transform: function (_doc, ret) {
     ret.id = ret._id;
     delete ret._id;
@@ -23,12 +23,12 @@ MutedWordsSchema.set("toJSON", {
   },
 });
 
-export interface MutedWordsDocument extends Document {
+export interface BlockedAccountDocument extends Document {
   userID: string;
-  mutedWords: string[];
+  blockedAccounts: string[];
 }
 
-export const MutedWordsModel = model<MutedWordsDocument>(
-  "muted words",
-  MutedWordsSchema
+export const BlockedAccountsModel = model<BlockedAccountDocument>(
+  "blocked accounts",
+  BlockedAccountSchema
 );
