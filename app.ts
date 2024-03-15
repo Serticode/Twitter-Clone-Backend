@@ -1,11 +1,16 @@
+import cors from "cors";
 import dotenv from "dotenv";
 import express, { json, urlencoded } from "express";
 import fileUpload from "express-fileupload";
+import { createServer } from "http";
+import { Server } from "socket.io";
 import * as swaggerUI from "swagger-ui-express";
 import { connectToDatabase } from "./database/db_connect";
-import { populateInterestsCollection } from "./database/populate_interests";
+import { listenForNewPosts } from "./database/listen_for_new_posts";
 import { errorHandlerMiddleware } from "./middleware/error_handler";
 import { RegisterRoutes } from "./routes/routes";
+import { ListenToSocketParams } from "./services/models/sockets_models";
+import SocketsService from "./services/sockets/sockets_service";
 import * as swaggerJson from "./tsoa/tsoa.json";
 
 //! DOT ENV
@@ -17,6 +22,7 @@ const app = express();
 //! MIDDLE WARE FOR PARSING JSON
 app.use(urlencoded({ extended: true }));
 app.use(json());
+app.use(cors());
 
 //! SWAGGER UI
 //! SERVING SWAGGER UI
@@ -58,15 +64,31 @@ const start = async () => {
 
     await connectToDatabase(mongoUri);
 
-    console.log("Connected to database");
+    console.log(`Connected to database \nStarting server...`);
 
-    await populateInterestsCollection();
+    const server = createServer(
+      app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+      })
+    );
 
-    console.log("Starting server...");
-
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
+    const io = new Server(server, {
+      cors: {
+        origin: `http://localhost:${port}/`,
+        methods: ["GET"],
+        credentials: true,
+      },
     });
+
+    const params = {
+      socketIO: io,
+      socketName: "postSocket",
+    } as ListenToSocketParams;
+
+    new SocketsService().listenToSocket(params);
+    await listenForNewPosts(params);
+
+    server.listen(3000);
   } catch (e) {
     console.log(e);
   }

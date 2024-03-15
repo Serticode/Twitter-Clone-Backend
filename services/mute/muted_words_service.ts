@@ -1,5 +1,7 @@
 import { MutedWordsModel } from "../../database/models/mute/muted_words";
 import {
+  GetMutedWordsParams,
+  GetMutedWordsResult,
   UserMutedWordParams,
   UserMutedWordsResult,
 } from "../models/muted_words_model";
@@ -35,6 +37,21 @@ export default class MutedWordsService {
     } catch (error) {
       console.error("Error muting word:", error);
       return { result: "Could not mute word, try again" };
+    }
+  }
+
+  public async getMutedWords(
+    params: GetMutedWordsParams
+  ): Promise<GetMutedWordsResult> {
+    const { userID } = params;
+
+    try {
+      const mutedWords = await MutedWordsModel.find({ userID });
+
+      return { result: mutedWords };
+    } catch (error) {
+      console.error("Error fetching Interests:", error);
+      throw error;
     }
   }
 }
