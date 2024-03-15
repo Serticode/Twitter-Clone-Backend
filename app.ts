@@ -52,6 +52,7 @@ RegisterRoutes(app);
 app.use(errorHandlerMiddleware);
 
 const port = process.env.PORT || process.env.BACKUP_PORT;
+const socketPort = process.env.SOCKET_PORT;
 
 const start = async () => {
   try {
@@ -88,7 +89,7 @@ const start = async () => {
     new SocketsService().listenToSocket(params);
     await listenForNewPosts(params);
 
-    server.listen(3000);
+    server.listen(socketPort);
   } catch (e) {
     console.log(e);
   }
